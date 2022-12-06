@@ -9,3 +9,8 @@ export const tokenState = atom({
     key: 'TokenState',
     default: ''
   });
+
+export const userState = atom({
+  key: 'UserState',
+  default: {name: "New User"}
+})
