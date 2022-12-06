@@ -6,6 +6,8 @@ import NavBar from './components/Navbar/NavBar';
 import Home from './pages/Home/Home';
 import CreateAccount from './pages/CreateAccount/CreateAccount';
 import ProfileCreation from './components/ProfileCreation/ProfileCreation';
+import Profile from './pages/Profile/Profile';
+import UploadPhoto from './components/Upload/UploadPhoto';
 
 function App() {
   return (
@@ -14,8 +16,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="user/:userId" element={<ProfileCreation />}  />
+        <Route path="upload" element={<UploadPhoto />} />
       </Routes>
     </div>
   );
