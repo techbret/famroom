@@ -7,8 +7,7 @@ import {
   tokenState,
   userState,
 } from "../../context/recoil/loginAtoms";
-import { setDoc, doc, addDoc, collection } from "firebase/firestore";
-import { db } from "../../config/firebase";
+
 
 export default function CreateAccount() {
   const [email, setEmail] = useState("");
@@ -21,29 +20,13 @@ export default function CreateAccount() {
   const [token, setToken] = useRecoilState(tokenState);
   const famUser = useRecoilValue(userState);
 
-  // USER ACCOUNT CREATION //
-  const [userID, setUserID] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zip, setZip] = useState("");
+
 
   const navigate = useNavigate();
 
   const auth = getAuth();
 
-  const userData = {
-    uid: userID,
-    email: email,
-    firstName: firstName,
-    lastName: lastName,
-    birthday: birthday,
-    city: city,
-    state: state,
-    zip: zip,
-  };
+
 
   useEffect(() => {
     auth.onAuthStateChanged((userCredential) => {
@@ -65,7 +48,7 @@ export default function CreateAccount() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user);
-        console.log(userCredential);
+        navigate('/user/' + userCredential.user.uid)
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -74,90 +57,14 @@ export default function CreateAccount() {
       });
   };
 
-  const setAccountInDb = async (e) => {
-    e.preventDefault();
-    setUserID(getAuth().currentUser);
-    const { uid } = getAuth().currentUser;
 
-    try {
-      await setDoc(doc(db, "users", uid), userData);
-    } catch (err) {
-      console.log(err);
-      alert(`Im sorry there was an error ${err}`);
-    }
-  };
 
-  const goToProfile = () => {
-    const { uid } = getAuth().currentUser;
-    navigate('/upload/' + uid)
-  }
+  
 
   return (
     <div>
       {isLoggedIn ? (
-        <>
-          <h1>Welcome {famUser.email}</h1>
-          <h3>
-            Please fill out the form below to finish setting up your account
-          </h3>
-          <form>
-            <input
-              type="text"
-              name="firstName"
-              id="firstName"
-              placeholder="First Name"
-              onChange={(e) => {
-                setFirstName(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              name="lastName"
-              id="lastName"
-              placeholder="Last Name"
-              onChange={(e) => {
-                setLastName(e.target.value);
-              }}
-            />
-            <input
-              type="date"
-              name="Birthday"
-              id="birthday"
-              onChange={(e) => {
-                setBirthday(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              name="City"
-              id="city"
-              placeholder="City"
-              onChange={(e) => {
-                setCity(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              name="State"
-              id="state"
-              placeholder="State"
-              onChange={(e) => {
-                setState(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              name="Zip Code"
-              id="zip"
-              placeholder="Zipcode"
-              onChange={(e) => {
-                setZip(e.target.value);
-              }}
-            />
-            <button onClick={setAccountInDb}>Submit</button>
-          </form>
-          <button className="bg-blue-500 px-6 py-3" onClick={goToProfile}>Upload Image</button>
-        </>
+       <div>Hi</div>
       ) : (
         <div>
           <h1>Welcome to FamRoom,</h1>

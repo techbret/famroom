@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil';
+import HomeSignUp from '../../components/HomeSignUp/HomeSignUp';
 import { loggedInState, tokenState } from '../../context/recoil/loginAtoms'
 
 function Home() {
@@ -14,7 +15,7 @@ function Home() {
 
     return (
         <div>
-            Welcome 
+            <HomeSignUp /> 
 
         </div>
     )

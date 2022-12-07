@@ -8,6 +8,7 @@ import CreateAccount from './pages/CreateAccount/CreateAccount';
 import ProfileCreation from './components/ProfileCreation/ProfileCreation';
 import Profile from './pages/Profile/Profile';
 import UploadPhoto from './components/Upload/UploadPhoto';
+import NewProfile from './components/ProfileCreation/NewProfile';
 
 function App() {
   return (
@@ -18,8 +19,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/create-account" element={<CreateAccount />} />
-        <Route path="user/:userId" element={<ProfileCreation />}  />
-        <Route path="upload/:userId" element={<UploadPhoto />} />
+        <Route path="/upload/:userId" element={<UploadPhoto />} />
+        <Route path="/user/:userId" element={<NewProfile />} />
       </Routes>
     </div>
   );
