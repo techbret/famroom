@@ -5,6 +5,9 @@ import { PlusIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { loggedInState } from '../../context/recoil/loginAtoms'
+import Logo from '../../assets/logo.svg'
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 const user = {
   name: 'Tom Cook',
@@ -13,16 +16,18 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
+  { name: 'Home', href: '/', current: true },
+  { name: 'Family', href: '#', current: false },
+  { name: 'News', href: '#', current: false },
   { name: 'Calendar', href: '#', current: false },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Settings', href: '#' }
 ]
+
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -30,18 +35,30 @@ function classNames(...classes) {
 
 export default function NavBar() {
   const isLoggedIn = useRecoilValue(loggedInState);
+
+  const navigate = useNavigate();
+    const auth = getAuth();    
+
+    const logout = (e) => {
+      signOut(auth).then(() => {
+        window.localStorage.setItem("auth", "false");
+        navigate('/')           
+      }).catch((error) => {
+        // An error happened.
+      });
+    }
   
 
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-lime-600">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <div className="-ml-2 mr-2 flex items-center md:hidden">
                   {/* Mobile menu button */}
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-lime-400 hover:bg-lime-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -53,12 +70,12 @@ export default function NavBar() {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src={Logo}
                     alt="Your Company"
                   />
                   <img
                     className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src={Logo}
                     alt="Your Company"
                   />
                 </div>
@@ -68,14 +85,14 @@ export default function NavBar() {
                       key={item.name}
                       href={item.href}
                       className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        item.current ? 'bg-white text-lime-600' : 'text-white hover:bg-lime-300 hover:text-lime-600',
                         'px-3 py-2 rounded-md text-sm font-medium'
                       )}
                       aria-current={item.current ? 'page' : undefined}
                     >
                       {item.name}
                     </a>
-                  ))}
+                  ))}                  
                 </div>
               </div>
               <div className="flex items-center">
@@ -83,7 +100,7 @@ export default function NavBar() {
                   <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                   <button
                     type="button"
-                    className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    className="rounded-full bg-lime-800 p-1 text-lime-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800"
                   >
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -92,7 +109,7 @@ export default function NavBar() {
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
-                      <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <Menu.Button className="flex rounded-lg bg-lime-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800">
                         <span className="sr-only">Open user menu</span>
                         <img className="h-8 w-8 rounded-lg" src={user.imageUrl} alt="" />
                       </Menu.Button>
@@ -113,15 +130,16 @@ export default function NavBar() {
                               <a
                                 href={item.href}
                                 className={classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700'
+                                  active ? 'bg-lime-100' : '',
+                                  'block px-4 py-2 text-sm text-lime-700'
                                 )}
                               >
                                 {item.name}
                               </a>
-                            )}
+                            )}                            
                           </Menu.Item>
                         ))}
+                        <button className='block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100' onClick={logout}>Sign Out</button>
                       </Menu.Items>
                     </Transition>
                   </Menu>
@@ -135,22 +153,13 @@ export default function NavBar() {
                   <Link
                     type="button"
                     to="/login"
-                    className="relative inline-flex items-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+                    className="relative inline-flex items-center rounded-md border border-transparent bg-lime-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-lime-900 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2 focus:ring-offset-lime-800"
                   >
                     <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
                     <span>Login</span>
                   </Link>
                 </div>
-                <div className="flex-shrink-0 ml-2">
-                  <Link
-                    type="button"
-                    to="/create-account"
-                    className="relative inline-flex items-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800"
-                  >
-                    <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                    <span>Create an Account</span>
-                  </Link>
-                </div>
+              
 
                 </>
                                  
@@ -171,7 +180,7 @@ export default function NavBar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    item.current ? 'bg-lime-900 text-white' : 'text-lime-300 hover:bg-lime-700 hover:text-white',
                     'block px-3 py-2 rounded-md text-base font-medium'
                   )}
                   aria-current={item.current ? 'page' : undefined}
@@ -180,18 +189,18 @@ export default function NavBar() {
                 </Disclosure.Button>
               ))}
             </div>
-            <div className="border-t border-gray-700 pt-4 pb-3">
+            <div className="border-t border-lime-700 pt-4 pb-3">
               <div className="flex items-center px-5 sm:px-6">
                 <div className="flex-shrink-0">
                   <img className="h-10 w-10 rounded-lg" src={user.imageUrl} alt="" />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-white">{user.name}</div>
-                  <div className="text-sm font-medium text-gray-400">{user.email}</div>
+                  <div className="text-sm font-medium text-lime-400">{user.email}</div>
                 </div>
                 <button
                   type="button"
-                  className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="ml-auto flex-shrink-0 rounded-full bg-lime-800 p-1 text-lime-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -203,7 +212,7 @@ export default function NavBar() {
                     key={item.name}
                     as="a"
                     href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-lime-400 hover:bg-lime-700 hover:text-white"
                   >
                     {item.name}
                   </Disclosure.Button>
