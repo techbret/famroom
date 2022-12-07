@@ -19,7 +19,7 @@ function App() {
         <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="user/:userId" element={<ProfileCreation />}  />
-        <Route path="upload" element={<UploadPhoto />} />
+        <Route path="upload/:userId" element={<UploadPhoto />} />
       </Routes>
     </div>
   );

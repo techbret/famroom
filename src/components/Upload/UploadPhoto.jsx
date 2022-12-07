@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import { storage } from '../../config/firebase';
 import { ref, uploadBytes } from "firebase/storage";
+import { useParams } from 'react-router-dom';
 
 export default function UploadPhoto() {
     const [file, setFile] = useState(null);
+    let { userId } = useParams();
 
     const uploadeImage = () => {
         if (file == null) return;
-        const imageRef = ref(storage, `userProfilePics/${imagename}`)
-    }
-
-    uploadBytes(storageRef, file).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });
-
-      const handleImageAsFile = (e) => {
-        const image = e.target.files[0]
-        setFile(imageFile => (image))
-    }
+        const imageRef = ref(storage, `/userProfilePics/${userId + "profilePic"}`);
+        uploadBytes(imageRef, file).then(() => {
+            alert('Image Uploaded')
+        })
+    }   
 
 
 
@@ -25,6 +21,7 @@ export default function UploadPhoto() {
     <div>
         <h1>Upload a Profile Picture</h1>
         <input type="file" name="file" id="file" onChange={e => setFile(e.target.files[0])}/>
+        <button onClick={uploadeImage}>Upload</button>
     </div>
   )
 }

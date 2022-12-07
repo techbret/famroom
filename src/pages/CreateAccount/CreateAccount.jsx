@@ -89,7 +89,7 @@ export default function CreateAccount() {
 
   const goToProfile = () => {
     const { uid } = getAuth().currentUser;
-    navigate('/profile/' + uid)
+    navigate('/upload/' + uid)
   }
 
   return (
@@ -156,7 +156,7 @@ export default function CreateAccount() {
             />
             <button onClick={setAccountInDb}>Submit</button>
           </form>
-          <button className="bg-blue-500 px-6 py-3" onClick={goToProfile}>Test</button>
+          <button className="bg-blue-500 px-6 py-3" onClick={goToProfile}>Upload Image</button>
         </>
       ) : (
         <div>
