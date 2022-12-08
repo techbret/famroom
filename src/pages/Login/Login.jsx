@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { loggedInState, tokenState } from '../../context/recoil/loginAtoms';
+import { loggedInState, tokenState, paramState } from '../../context/recoil/loginAtoms';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
     const [token, setToken] = useRecoilState(tokenState);
+    const [paramID, setParamID] = useRecoilState(paramState);
     const [authState, setAuthState] = useRecoilState(loggedInState);
     const [user, setUser] = useState({});
     const [isLoggedIn, setIsLoggedIn] = useState(false || window.localStorage.getItem("auth") === "true");
@@ -24,6 +25,7 @@ function Login() {
                 userCredential.getIdToken().then((token) => {
                     setToken(token)
                 })
+                setParamID(userCredential.user.uid);
             } else {
                 window.localStorage.setItem("auth", "false");
             }
@@ -39,7 +41,9 @@ function Login() {
                     setIsLoggedIn(true);
                     window.localStorage.setItem("auth", "true");
                     setAuthState(true)
+                    setParamID(userCredential.user.uid)
                     navigate('/user/' + userCredential.user.uid)
+                    
                 }
             })
             .catch((error) => {

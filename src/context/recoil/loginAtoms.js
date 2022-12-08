@@ -14,3 +14,8 @@ export const userState = atom({
   key: 'UserState',
   default: {name: "New User"}
 })
+
+export const paramState = atom({
+  key: 'ParamState',
+  default: ""
+})
