@@ -1,51 +1,6 @@
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { updateDoc, doc } from "firebase/firestore";
-import { db } from "../../config/firebase";
-import Logo from '../../assets/green-logo.svg'
-import { UserAuth } from '../../context/UseContext/AuthContext';
+import React from 'react'
 
-export default function NewProfile() {
-    let { userId } = useParams();
-    const navigate = useNavigate();
-    const { user } = UserAuth();
-    
-
-    //USER ACCOUNT CREATION //
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [phone, setPhoneNumber] = useState("");
-    const [jobTitle, setJobTitle] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [zip, setZip] = useState("");
-    const [familyCode, setFamilyCode] = useState([]);
-
-    const userData = {
-        firstName: firstName,
-        lastName: lastName,
-        birthday: birthday,
-        jobTitle: jobTitle,
-        city: city,
-        state: state,
-        zip: zip,
-        phone: phone,
-        familyCode: [familyCode],
-        profilePicUrl: "/userProfilePics/" + userId + "_profilepic" 
-    };  
-
-    const setAccountInDb = async (e) => {
-        e.preventDefault();
-        try {
-            await updateDoc(doc(db, "users", user.uid), userData);
-            navigate('/upload' )
-        } catch (err) {
-            console.log(err);
-            alert(`Im sorry there was an error ${err}`);
-        }
-    };
-
+export default function CreateProfile() {
     return (
         <>
             <div className="flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8 bg-lime-100">
@@ -62,7 +17,7 @@ export default function NewProfile() {
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                     <div className="bg-white py-2 shadow sm:rounded-lg px-4">
                         <form className="space-y-2">
-                            <h1 className='-mb-3 text-xl font-extrabold'>Welcome <span className='text-lime-600'>{userId}</span></h1>
+                            <h1 className='-mb-3 text-xl font-extrabold'>Welcome <span className='text-lime-600'>{document.displayName}</span></h1>
                             <p className=''>Please Finish Setting Up Your Account</p>
                             <div className='grid grid-cols-1 sm:grid-cols-4 sm:gap-x-2 gap-y-1'>
                                 <div className="sm:col-span-2">
@@ -91,18 +46,6 @@ export default function NewProfile() {
                                             className="block w-full bg-zinc-100 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-lime-500 focus:outline-none focus:ring-lime-500 sm:text-sm"
                                             placeholder='Last Name'
                                             onChange={(e) => { setLastName(e.target.value) }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="sm:col-span-4">
-                                    <div className="mt-1">
-                                        <input
-                                            type="text"
-                                            name="jobTitle"
-                                            id="jobTitle"
-                                            className="block w-full bg-zinc-100 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-lime-500 focus:outline-none focus:ring-lime-500 sm:text-sm"
-                                            placeholder='Job Title'
-                                            onChange={(e) => { setJobTitle(e.target.value) }}
                                         />
                                     </div>
                                 </div>

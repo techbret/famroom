@@ -1,66 +1,46 @@
-import { Fragment, useEffect, useState } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { PlusIcon } from '@heroicons/react/20/solid'
-import { Link, useParams } from 'react-router-dom'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { loggedInState, paramState, userState } from '../../context/recoil/loginAtoms'
-import Logo from '../../assets/logo.svg'
-import { getAuth, signOut } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../config/firebase"; 
-import { set } from 'firebase/database'
-
+import { Fragment, useEffect, useState } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/20/solid";
+import { Link } from "react-router-dom";
+import Logo from "../../assets/logo.svg";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../../context/UseContext/AuthContext";
+import Profile from "../../pages/Profile/Profile";
+import { getStorage, ref } from "firebase/storage";
 
 const navigation = [
-  { name: 'Home', href: '/', current: true },
-  { name: 'Family', href: '#', current: false },
-  { name: 'News', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-]
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' }
-]
-
+  { name: "Home", href: "/", current: true },
+  { name: "Family", href: "#", current: false },
+  { name: "News", href: "#", current: false },
+  { name: "Calendar", href: "#", current: false },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function NavBar() {
-  const [isLoggedIn, setIsLoggedIn1] = useState(false)   
-  const [userID, setUserID] = useState('')
-  const [user, setUser] = useRecoilState(userState);
-  const [isUser, setIsLoggedIn] = useRecoilState(loggedInState || window.localStorage.getItem("auth") === true);
-  
-
+  const { logout, isLoggedIn, profile, profileUrl } = UserAuth();
   const navigate = useNavigate();
-  const auth = getAuth();
-  
 
-  useEffect(() => {
-    setUserID(window.localStorage.getItem('displayName'));
-    const getData = async () => {
-      const docRef = doc(db, "users", window.localStorage.getItem('displayName'));
-      const docSnap = await getDoc(docRef);
-      setUser({ ...docSnap.data() });
-    };   
-    getData();
-    console.log(isUser)
-  }, [])
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+      console.log("You are logged out");
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
-  const logout = (e) => {
-    signOut(auth).then(() => {
-      window.localStorage.setItem("auth", "false");
-      setIsLoggedIn(false)
-      navigate('/')
-    }).catch((error) => {
-      // An error happened.
-    });
-  }
+  const handleProfile = () => {
+    navigate("/profile/" + profile.displayName);
+  };
 
+  const handleSettings = () => {
+    navigate("/settings/" + profile.displayName);
+  };
 
   return (
     <Disclosure as="nav" className="bg-lime-600">
@@ -98,25 +78,30 @@ export default function NavBar() {
                       key={item.name}
                       href={item.href}
                       className={classNames(
-                        item.current ? 'bg-white text-lime-600' : 'text-white hover:bg-lime-300 hover:text-lime-600',
-                        'px-3 py-2 rounded-md text-sm font-medium'
+                        item.current
+                          ? "bg-white text-lime-600"
+                          : "text-white hover:bg-lime-300 hover:text-lime-600",
+                        "px-3 py-2 rounded-md text-sm font-medium"
                       )}
-                      aria-current={item.current ? 'page' : undefined}
+                      aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
-                    </a>                    
+                    </a>
                   ))}
                 </div>
               </div>
               <div className="flex items-center">
-                {isUser ? (
+                {isLoggedIn ? (
                   <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                     <button
                       type="button"
                       className="rounded-md bg-lime-800 p-1 text-lime-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800"
                     >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                      <span className="relative ">
+                        <span className="sr-only">View notifications</span>
+                        <BellIcon className="h-8 w-8" aria-hidden="true" />
+                        <span className="absolute top-0 right-0 block h-3 w-3 -translate-y-1/2 translate-x-1/2 transform rounded-full bg-lime-400 ring-2 ring-white" />
+                      </span>
                     </button>
 
                     {/* Profile dropdown */}
@@ -124,7 +109,11 @@ export default function NavBar() {
                       <div>
                         <Menu.Button className="flex rounded-lg bg-lime-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800">
                           <span className="sr-only">Open user menu</span>
-                          <img className="h-8 w-8 rounded-lg" src="https://firebasestorage.googleapis.com/v0/b/fambook-c536f.appspot.com/o/userProfilePics%2FSF5BIlAfJ1cFTPz6s1eHbWG3DM53profilePic?alt=media&token=d9b1c589-d354-4ed4-b849-2e3e1c9888b" alt="" />
+                          <img
+                            className="h-10 w-10 rounded-lg"
+                            src={profileUrl}
+                            alt=""
+                          />
                         </Menu.Button>
                       </div>
                       <Transition
@@ -137,29 +126,28 @@ export default function NavBar() {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
-                              {({ active }) => (
-                                <a
-                                  href={item.href}
-                                  className={classNames(
-                                    active ? 'bg-lime-100' : '',
-                                    'block px-4 py-2 text-sm text-lime-700'
-                                  )}
-                                >
-                                  {item.name}
-                                </a>
-                              )}
-                            </Menu.Item>
-                          ))}
-                          <button className='block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100' onClick={logout}>Sign Out</button>
+                          <a
+                            className="block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100"
+                            onClick={handleProfile}
+                          >
+                            <button>Your Profile</button>
+                          </a>
+                          <a
+                            className="block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100"
+                            onClick={handleSettings}
+                          >
+                            <button>Settings</button>
+                          </a>
+                          <a
+                            className="block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100"
+                            onClick={handleLogout}
+                          >
+                            <button>Sign Out</button>
+                          </a>
                         </Menu.Items>
                       </Transition>
                     </Menu>
                   </div>
-
-
-
                 ) : (
                   <>
                     <div className="flex-shrink-0">
@@ -168,19 +156,15 @@ export default function NavBar() {
                         to="/login"
                         className="relative inline-flex items-center rounded-md border border-transparent bg-lime-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-lime-800"
                       >
-                        <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                        <PlusIcon
+                          className="-ml-1 mr-2 h-5 w-5"
+                          aria-hidden="true"
+                        />
                         <span>Login</span>
                       </Link>
                     </div>
-
-
                   </>
-
-                )
-
-                }
-
-
+                )}
               </div>
             </div>
           </div>
@@ -193,10 +177,12 @@ export default function NavBar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-lime-900 text-white' : 'text-lime-300 hover:bg-lime-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium'
+                    item.current
+                      ? "bg-lime-900 text-white"
+                      : "text-lime-300 hover:bg-lime-700 hover:text-white",
+                    "block px-3 py-2 rounded-md text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -205,11 +191,19 @@ export default function NavBar() {
             <div className="border-t border-lime-700 pt-4 pb-3">
               <div className="flex items-center px-5 sm:px-6">
                 <div className="flex-shrink-0">
-                  <img className="h-10 w-10 rounded-lg" src="https://firebasestorage.googleapis.com/v0/b/fambook-c536f.appspot.com/o/userProfilePics%2FSF5BIlAfJ1cFTPz6s1eHbWG3DM53profilePic?alt=media&token=d9b1c589-d354-4ed4-b849-2e3e1c9888b" alt="" />
+                  <img
+                    className="h-10 w-10 rounded-lg"
+                    src="https://firebasestorage.googleapis.com/v0/b/fambook-c536f.appspot.com/o/userProfilePics%2FSF5BIlAfJ1cFTPz6s1eHbWG3DM53profilePic?alt=media&token=d9b1c589-d354-4ed4-b849-2e3e1c9888b"
+                    alt=""
+                  />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium text-white">{user.firstName} {user.lastName}</div>
-                  <div className="text-sm font-medium text-lime-400">{user.email}</div>
+                  <div className="text-base font-medium text-white">
+                    {profile.firstName} {profile.lastName}
+                  </div>
+                  <div className="text-sm font-medium text-lime-400">
+                    {profile.email}
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -220,21 +214,20 @@ export default function NavBar() {
                 </button>
               </div>
               <div className="mt-3 space-y-1 px-2 sm:px-3">
-                {userNavigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-lime-400 hover:bg-lime-700 hover:text-white"
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
+                <a className="block rounded-md px-3 py-2 text-base font-medium text-lime-400 hover:bg-lime-700 hover:text-white">
+                  Your Profile
+                </a>
+                <a className="block rounded-md px-3 py-2 text-base font-medium text-lime-400 hover:bg-lime-700 hover:text-white">
+                  Settings
+                </a>
+                <a className="block rounded-md px-3 py-2 text-base font-medium text-lime-400 hover:bg-lime-700 hover:text-white">
+                  Sign Out
+                </a>
               </div>
             </div>
           </Disclosure.Panel>
         </>
       )}
     </Disclosure>
-  )
+  );
 }

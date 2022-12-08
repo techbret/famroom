@@ -3,27 +3,18 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../config/firebase"; 
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
+import ShareSomething from "../../components/ShareSomething/ShareSomething";
 
 export default function Profile() {
   const [user, setUser] = useState({});
   let { userId } = useParams();
 
 
-  useEffect(() => {
-    console.log(window.localStorage.getItem("displayName"))
-    const getData = async () => {
-      const docRef = doc(db, "users", userId);
-      const docSnap = await getDoc(docRef);
-      setUser({ ...docSnap.data() });
-    };
-    getData();
-  }, []);
 
 
   return (
-    <div>
-      <>
-    
+    <div >
+      <>    
         {/* Background color split screen for large screens */}
         <div className="relative flex min-h-screen flex-col">
           {/* 3 column wrapper */}
@@ -38,15 +29,12 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-white lg:min-w-0 lg:flex-1">
+              <div className="bg-gray-50 lg:min-w-0 lg:flex-1">
                 <div className="h-full py-6 px-4 sm:px-6 lg:px-8">
                   {/* Start main area*/}
                   <div className="relative h-full" style={{ minHeight: '36rem' }}>                    
 
-                    <form>
-                      <textarea className="block flex w-full rounded-lg " type="textbox" placeholder="Share Your Thoughts..." ></textarea>
-                                         
-                    </form>
+                    <ShareSomething />
 
 
                   </div>
