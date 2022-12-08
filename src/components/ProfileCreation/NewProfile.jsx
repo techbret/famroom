@@ -30,7 +30,7 @@ export default function NewProfile() {
         if (auth.currentUser) {
             setUser(auth.currentUser)
         };
-        getDocument()
+        getDocument();
 
     }, [])
 
@@ -64,7 +64,9 @@ export default function NewProfile() {
     const setAccountInDb = async (e) => {
         e.preventDefault();
         try {
-            await updateDoc(doc(db, "users", auth.currentUser.uid), userData);
+            await updateDoc(doc(db, "users", userId), userData);
+            window.localStorage.setItem("displayName", userId);
+            navigate('/profile/' + userId)
         } catch (err) {
             console.log(err);
             alert(`Im sorry there was an error ${err}`);
@@ -87,7 +89,7 @@ export default function NewProfile() {
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                     <div className="bg-white py-2 shadow sm:rounded-lg px-4">
                         <form className="space-y-2">
-                            <h1 className='-mb-3 text-xl font-extrabold'>Welcome {document.displayName}</h1>
+                            <h1 className='-mb-3 text-xl font-extrabold'>Welcome <span className='text-lime-600'>{document.displayName}</span></h1>
                             <p className=''>Please Finish Setting Up Your Account</p>
                             <div className='grid grid-cols-1 sm:grid-cols-4 sm:gap-x-2 gap-y-1'>
                                 <div className="sm:col-span-2">

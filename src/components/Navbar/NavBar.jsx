@@ -1,20 +1,18 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { PlusIcon } from '@heroicons/react/20/solid'
-import { Link } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import { loggedInState } from '../../context/recoil/loginAtoms'
+import { Link, useParams } from 'react-router-dom'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { loggedInState, paramState, userState } from '../../context/recoil/loginAtoms'
 import Logo from '../../assets/logo.svg'
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../config/firebase"; 
+import { set } from 'firebase/database'
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+
 const navigation = [
   { name: 'Home', href: '/', current: true },
   { name: 'Family', href: '#', current: false },
@@ -27,27 +25,42 @@ const userNavigation = [
 ]
 
 
-
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function NavBar() {
-  const isLoggedIn = useRecoilValue(loggedInState);
+  const [isLoggedIn, setIsLoggedIn1] = useState(false)   
+  const [userID, setUserID] = useState('')
+  const [user, setUser] = useRecoilState(userState);
+  const [isUser, setIsLoggedIn] = useRecoilState(loggedInState || window.localStorage.getItem("auth") === true);
+  
 
   const navigate = useNavigate();
-    const auth = getAuth();    
-
-    const logout = (e) => {
-      signOut(auth).then(() => {
-        window.localStorage.setItem("auth", "false");
-        navigate('/')           
-      }).catch((error) => {
-        // An error happened.
-      });
-    }
+  const auth = getAuth();
   
+
+  useEffect(() => {
+    setUserID(window.localStorage.getItem('displayName'));
+    const getData = async () => {
+      const docRef = doc(db, "users", window.localStorage.getItem('displayName'));
+      const docSnap = await getDoc(docRef);
+      setUser({ ...docSnap.data() });
+    };   
+    getData();
+    console.log(isUser)
+  }, [])
+
+  const logout = (e) => {
+    signOut(auth).then(() => {
+      window.localStorage.setItem("auth", "false");
+      setIsLoggedIn(false)
+      navigate('/')
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
+
 
   return (
     <Disclosure as="nav" className="bg-lime-600">
@@ -91,83 +104,83 @@ export default function NavBar() {
                       aria-current={item.current ? 'page' : undefined}
                     >
                       {item.name}
-                    </a>
-                  ))}                  
+                    </a>                    
+                  ))}
                 </div>
               </div>
               <div className="flex items-center">
-                {isLoggedIn ? (
+                {isUser ? (
                   <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                  <button
-                    type="button"
-                    className="rounded-full bg-lime-800 p-1 text-lime-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-
-                  {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-3">
-                    <div>
-                      <Menu.Button className="flex rounded-lg bg-lime-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800">
-                        <span className="sr-only">Open user menu</span>
-                        <img className="h-8 w-8 rounded-lg" src={user.imageUrl} alt="" />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
+                    <button
+                      type="button"
+                      className="rounded-md bg-lime-800 p-1 text-lime-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {userNavigation.map((item) => (
-                          <Menu.Item key={item.name}>
-                            {({ active }) => (
-                              <a
-                                href={item.href}
-                                className={classNames(
-                                  active ? 'bg-lime-100' : '',
-                                  'block px-4 py-2 text-sm text-lime-700'
-                                )}
-                              >
-                                {item.name}
-                              </a>
-                            )}                            
-                          </Menu.Item>
-                        ))}
-                        <button className='block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100' onClick={logout}>Sign Out</button>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
-                  
+                      <span className="sr-only">View notifications</span>
+                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+
+                    {/* Profile dropdown */}
+                    <Menu as="div" className="relative ml-3">
+                      <div>
+                        <Menu.Button className="flex rounded-lg bg-lime-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800">
+                          <span className="sr-only">Open user menu</span>
+                          <img className="h-8 w-8 rounded-lg" src="https://firebasestorage.googleapis.com/v0/b/fambook-c536f.appspot.com/o/userProfilePics%2FSF5BIlAfJ1cFTPz6s1eHbWG3DM53profilePic?alt=media&token=d9b1c589-d354-4ed4-b849-2e3e1c9888b" alt="" />
+                        </Menu.Button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-200"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          {userNavigation.map((item) => (
+                            <Menu.Item key={item.name}>
+                              {({ active }) => (
+                                <a
+                                  href={item.href}
+                                  className={classNames(
+                                    active ? 'bg-lime-100' : '',
+                                    'block px-4 py-2 text-sm text-lime-700'
+                                  )}
+                                >
+                                  {item.name}
+                                </a>
+                              )}
+                            </Menu.Item>
+                          ))}
+                          <button className='block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100' onClick={logout}>Sign Out</button>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
+
 
 
                 ) : (
                   <>
-                  <div className="flex-shrink-0">
-                  <Link
-                    type="button"
-                    to="/login"
-                    className="relative inline-flex items-center rounded-md border border-transparent bg-lime-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-lime-900 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2 focus:ring-offset-lime-800"
-                  >
-                    <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                    <span>Login</span>
-                  </Link>
-                </div>
-              
+                    <div className="flex-shrink-0">
+                      <Link
+                        type="button"
+                        to="/login"
+                        className="relative inline-flex items-center rounded-md border border-transparent bg-lime-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-lime-800"
+                      >
+                        <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                        <span>Login</span>
+                      </Link>
+                    </div>
 
-                </>
-                                 
+
+                  </>
+
                 )
-                
+
                 }
-                
-                
+
+
               </div>
             </div>
           </div>
@@ -192,15 +205,15 @@ export default function NavBar() {
             <div className="border-t border-lime-700 pt-4 pb-3">
               <div className="flex items-center px-5 sm:px-6">
                 <div className="flex-shrink-0">
-                  <img className="h-10 w-10 rounded-lg" src={user.imageUrl} alt="" />
+                  <img className="h-10 w-10 rounded-lg" src="https://firebasestorage.googleapis.com/v0/b/fambook-c536f.appspot.com/o/userProfilePics%2FSF5BIlAfJ1cFTPz6s1eHbWG3DM53profilePic?alt=media&token=d9b1c589-d354-4ed4-b849-2e3e1c9888b" alt="" />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium text-white">{user.name}</div>
+                  <div className="text-base font-medium text-white">{user.firstName} {user.lastName}</div>
                   <div className="text-sm font-medium text-lime-400">{user.email}</div>
                 </div>
                 <button
                   type="button"
-                  className="ml-auto flex-shrink-0 rounded-full bg-lime-800 p-1 text-lime-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800"
+                  className="ml-auto flex-shrink-0 rounded-md bg-lime-800 p-1 text-lime-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-lime-800"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />

@@ -44,12 +44,13 @@ export default function HomeSignUp() {
         e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password, displayName)
           .then((userCredential) => {
-            setDoc(doc(db, "users", userCredential.user.uid), {
+            setDoc(doc(db, "users", displayName), {
                 displayName: displayName,
                 email: email,
                 _id: userCredential.user.uid
             });
-            navigate('/user/' + userCredential.user.uid)
+            setAuthState(true)
+            navigate('/user/' + displayName)
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -162,7 +163,7 @@ export default function HomeSignUp() {
                                                         name="name"
                                                         id="name"
                                                         autoComplete="name"
-                                                        placeholder="Full name"
+                                                        placeholder="Username"
                                                         required
                                                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-lime-500 focus:ring-lime-500 sm:text-sm"
                                                         onChange={(e) => {setDisplayName(e.target.value)}}
