@@ -36,11 +36,9 @@ export const AuthContextProvider = ({ children }) => {
     });
   };
 
-  const getImage = async (url) => { {
+  const getImage = async (url) => { 
     const imgUrl = await getDownloadURL(ref(storage, url));
     setProfileUrl(imgUrl);
-  }
-
   }
 
   const updateUser = async ({userData}) => {
@@ -49,6 +47,14 @@ export const AuthContextProvider = ({ children }) => {
     } catch (err) {
         console.log(err.message);
         alert(`There was an error: ${err}`)
+    }
+  }
+
+  const createPost = async ({postData}) => {
+    try {
+      await setDoc(doc(db, "posts", user.uid), postData);
+    } catch (err) {
+      alert(`There was an error ${err}`)
     }
   }
 
@@ -94,7 +100,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl }}>
+    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost }}>
       {children}
     </UserContext.Provider>
   );
