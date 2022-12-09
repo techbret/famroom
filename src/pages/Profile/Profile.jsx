@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../config/firebase"; 
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import ShareSomething from "../../components/ShareSomething/ShareSomething";
 
 export default function Profile() {
-  const [user, setUser] = useState({});
-  let { userId } = useParams();
-
-
-
-
+  
   return (
     <div >
       <>    

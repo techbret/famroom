@@ -26,7 +26,20 @@ function classNames(...classes) {
 
 export default function ShareSomething() {
   const [selected, setSelected] = useState(moods[5])
-  const { profileUrl } = UserAuth()
+  const { profileUrl, profile, createPost } = UserAuth()
+
+  const [ post, setPost ] = useState('')
+
+  const postData = {
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+    post: post
+  }
+
+  const handlePost = (e) => {
+    e.preventDefault();
+    createPost({postData});
+  }
 
   return (
     <div className="flex items-start space-x-4 bg-white p-10 rounded-lg shadow-lg">
@@ -38,7 +51,7 @@ export default function ShareSomething() {
         />
       </div>
       <div className="min-w-0 flex-1">
-        <form action="#" className="relative">
+        <form className="relative">
           <div className="overflow-hidden rounded-lg border border-white  focus-within:border-white focus-within:ring-1 focus-within:ring-white">
             <label htmlFor="comment" className="sr-only">
               Add your comment
@@ -49,7 +62,7 @@ export default function ShareSomething() {
               id="comment"
               className="block w-full resize-none border-0 py-3 focus:ring-0 sm:text-lg"
               placeholder="Share your thoughts..."
-              defaultValue={''}
+              onChange={(e) => {setPost(e.target.value)}}
             />
 
             {/* Spacer element to match the height of the toolbar */}
@@ -148,6 +161,7 @@ export default function ShareSomething() {
               <button
                 type="submit"
                 className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                onClick={handlePost}
               >
                 Post
               </button>
