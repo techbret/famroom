@@ -11,6 +11,7 @@ import UploadPhoto from "./components/Upload/UploadPhoto";
 import NewProfile from "./components/ProfileCreation/NewProfile";
 import { AuthContextProvider } from "./context/UseContext/AuthContext";
 import ProtectedRoute from './config/ProtectedRoute';
+import CreateGroup from "./components/CreateGroup/CreateGroup";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/upload" element={<UploadPhoto />} />
           <Route path="/user/:userId" element={<NewProfile />} />
+          <Route path="/create-group" element={<CreateGroup />} />
         </Routes>
       </AuthContextProvider>
     </div>

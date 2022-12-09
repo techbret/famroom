@@ -74,9 +74,9 @@ export default function NavBar() {
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className={classNames(
                         item.current
                           ? "bg-white text-lime-600"
@@ -86,7 +86,7 @@ export default function NavBar() {
                       aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -126,23 +126,23 @@ export default function NavBar() {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <a
+                          <Link
+                            to={`/profile/${profile.displayName}`}
                             className="block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100"
-                            onClick={handleProfile}
                           >
-                            <button>Your Profile</button>
-                          </a>
-                          <a
+                            Your Profile
+                          </Link>
+                          <Link
                             className="block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100"
-                            onClick={handleSettings}
+                            to="/settings"
                           >
-                            <button>Settings</button>
-                          </a>
+                            Settings
+                          </Link>
                           <a
                             className="block px-4 py-2 text-sm text-lime-700 hover:bg-lime-100"
                             onClick={handleLogout}
                           >
-                            <button>Sign Out</button>
+                            Sign Out
                           </a>
                         </Menu.Items>
                       </Transition>

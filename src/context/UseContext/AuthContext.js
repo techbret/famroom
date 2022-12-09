@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { auth, storage } from "../../config/firebase";
 import { db } from "../../config/firebase";
-import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { getDownloadURL, ref } from "firebase/storage";
 
@@ -58,6 +58,23 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const createGroup = async ({groupData}) => {
+    try {
+      await setDoc(doc(db, "groups", groupData.id), groupData).then(
+        await updateDoc(doc(db, "users", groupData.admin), {
+          familyCode: arrayUnion({
+            _id: groupData.id,
+            name: groupData.groupName,
+            link: '/group/'+groupData.groupName
+          })
+        })
+      );
+      
+    } catch (err) {
+      alert(`There was an error ${err}`)
+    }
+  }
+
   const signIn = (email, password) => {       
     return signInWithEmailAndPassword(auth, email, password);
   };
@@ -100,7 +117,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost }}>
+    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup }}>
       {children}
     </UserContext.Provider>
   );
