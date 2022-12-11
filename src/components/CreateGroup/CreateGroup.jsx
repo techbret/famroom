@@ -94,7 +94,7 @@ export default function CreateGroup() {
             className="w-full mx-auto rounded-md border border-transparent bg-lime-600 px-6 py-3 font-medium text-white shadow-sm hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2 mt-12"
             onClick={handleCreateGroup}
           >
-            Button text
+            Create Group
           </button>
         </form>
       </div>

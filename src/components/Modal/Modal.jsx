@@ -6,16 +6,15 @@ import { db } from "../../config/firebase";
 import { UserAuth } from '../../context/UseContext/AuthContext';
 
 export default function Modal() {
-  const [open, setOpen] = useState(true)
-  const [status, setStatus] = useState('Update Status')
-  const { user } = UserAuth()
+  const [open, setOpen] = useState(true)  
+  const { user, profile } = UserAuth()
+  const [status, setStatus] = useState(profile.status)
 
   const handleUpdateStatus = async (e) => {
     e.preventDefault();
     try {
       await updateDoc(doc(db, "users", user.uid), {status: status});
       setOpen(false)
-      window.location.reload();
     } catch (err) {
       console.log(err)
     }

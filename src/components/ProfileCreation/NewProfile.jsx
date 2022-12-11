@@ -31,7 +31,7 @@ export default function NewProfile() {
         state: state,
         zip: zip,
         phone: phone,
-        familyCode: [familyCode],
+        familyCode: familyCode,
         profilePicUrl: "/userProfilePics/" + userId + "_profilepic" 
     };  
 
