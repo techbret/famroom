@@ -3,18 +3,54 @@ import { UserAuth } from '../../context/UseContext/AuthContext'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { CodeBracketIcon, EllipsisHorizontalIcon, FlagIcon, StarIcon } from '@heroicons/react/20/solid'
+import { doc, getDoc, getDocs, onSnapshot } from 'firebase/firestore'
+import { db } from '../../config/firebase'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function ThoughtLog() {
-  const { posts } = UserAuth();
+  const { posts, profile, profileUrl } = UserAuth();
+  const [postIDs, setPostIDs] = useState([])
 
+  const pid = profile._id; 
+
+
+  const getPosts = async (code) => {
+    const postsRef = doc(db, "posts", code);
+    const data = await getDoc(postsRef);
+
+    if (data.exists()) {
+      if (data.data().posts.length > 0)
+      for (let i = 0; i < data.data().posts.length; i++) {
+        setPostIDs(prevPostIDs => [...prevPostIDs, data.data().posts[i]])
+      }
+      console.log('running')
+      
+    } else {
+      console.log('DoesNot Exist')
+    }
+    
+  }
+  
+  useEffect(() => {
+    if (pid) {
+      onSnapshot(doc(db, "users", pid), (doc) => {
+        doc.data().familyCode.forEach(code => 
+          getPosts(code._id)      
+          )
+      })
+    } else {
+      console.log("Nothing")
+    }
+    console.log("Running")
+    
+  }, [])
 
   return (
     <div>
-      {posts.map(post => (
+      {postIDs.map(post => (
         <div className="bg-white px-4 py-5 sm:px-6 border mt-4 rounded-sm shadow-md">
 
           <div className="flex space-x-3">
@@ -44,7 +80,7 @@ export default function ThoughtLog() {
               </div>
               
             </div>
-            <Menu as="div" className="absolute inline-block right-4 text-left">
+            <Menu as="div" className="absolute inline-block right-4 text-left">              
                 <div>
                   <Menu.Button className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600">
                     <span className="sr-only">Open options</span>

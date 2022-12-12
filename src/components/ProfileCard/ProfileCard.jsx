@@ -18,11 +18,13 @@ export default function ProfileCard() {
     <div>
         
       <div className="mx-auto text-center shadow-lg bg-white p-5 rounded-md">
+        <div className="flex flex-wrap justify-center ">
         <img
-          className="mx-auto mt-4 mb-4 rounded-lg h-24 shadow-lg"
+          className="mx-auto mt-4 mb-4 w-24 h-24 object-center shadow-lg"
           src={profileUrl}
           alt=""
         />
+        </div>
         <p className="text-xl font-bold">
           {profile.firstName} {profile.lastName}
         </p>
