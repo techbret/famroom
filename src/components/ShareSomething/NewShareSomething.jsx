@@ -11,7 +11,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/20/solid";
 import { UserAuth } from "../../context/UseContext/AuthContext";
-import { Timestamp } from "firebase/firestore";
+import { serverTimestamp, Timestamp } from "firebase/firestore";
 
 const assignees = [
   { name: "Unassigned", value: null },
@@ -46,27 +46,34 @@ export default function NewShareSomething() {
   const [post, setPost] = useState("Share your thoughts...");
   const [title, setTitle] = useState("Title");
 
-  const seconds = Math.floor(Date.now() / 1000);
-  const nanoseconds = 0;
-  const timestamp = new Timestamp(seconds, nanoseconds);
-
-  const postData = {
-    firstName: profile.firstName,
-    lastName: profile.lastName,
-    groupID: assigned._id,
-    post: post,
-    title: title,
-    displayName: profile.displayName,
-    profileImg: profileUrl,
-    timestamp: timestamp.toDate(),
-  };
-
   const handleSubmitPost = (e) => {
     e.preventDefault();
     if (assigned._id === undefined) {
-      console.log("Undefinded");
+      console.log(profile.familyCode);
+      profile.familyCode.forEach((code) => {
+        createPost({
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          groupID: code._id,
+          id: Math.floor(Math.random() * 10000000),
+          post: post,
+          title: title,
+          displayName: profile.displayName,
+          profileImg: profileUrl,
+          timestamp: serverTimestamp(),
+        });
+      });
     } else {
-      createPost({ postData });
+      createPost({
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        groupID: assigned._id,
+        post: post,
+        title: title,
+        displayName: profile.displayName,
+        profileImg: profileUrl,
+        timestamp: serverTimestamp(),
+      });
       setAssigned(assignees[0]);
     }
   };
@@ -195,7 +202,10 @@ export default function NewShareSomething() {
                                 className="h-5 w-5 flex-shrink-0 rounded-full"
                               />
                             ) : (
-                                <UsersIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                              <UsersIcon
+                                className="h-5 w-5 flex-shrink-0 text-gray-400"
+                                aria-hidden="true"
+                              />
                             )}
 
                             <span className="ml-3 block truncate font-medium">
