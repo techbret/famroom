@@ -84,7 +84,6 @@ export default function ThoughtLog() {
 
   return (
     <div>
-      <label className="text-md font-semibold">Select a group </label>
       <select
         id="group"
         name="group"
@@ -92,7 +91,7 @@ export default function ThoughtLog() {
         className="mt-4 lock w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:max-w-xs sm:text-sm"
         onChange={(e) => {setGroup(e.target.value)}}
       >
-        <option>Select All Groups</option>
+        <option>Select A Group</option>
         {profile.familyCode?.map((item) => (
           <option key={item._id} value={item._id} to={item.link} >
             {item.name}

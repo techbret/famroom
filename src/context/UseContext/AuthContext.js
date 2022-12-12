@@ -18,8 +18,7 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profile, setProfile] = useState({})
   const [profileUrl, setProfileUrl] = useState('');
-  const [posts, setPosts] = useState([])
-  const [postIds, setPostIds] = useState([])
+  const [group, setGroup] = useState('');
 
   const userID = useParams();
 
@@ -53,17 +52,7 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
-  // const createPost = async ({ postData }) => {
-  //   try {
-  //     await updateDoc(doc(db, "posts", postData.groupID), {
-  //       posts: arrayUnion({ postData })
-  //     });
-  //   } catch (err) {
-  //     alert(`There was an error ${err}`)
-  //   }
-  // }
-
-  const createPost = async ( postData ) => {
+   const createPost = async ( postData ) => {
     try {
       const newID = postData;      
       await addDoc(collection(db, 'group-posts', newID.groupID, 'posts' ),  postData)
@@ -109,8 +98,8 @@ export const AuthContextProvider = ({ children }) => {
         setIsLoggedIn(true);
         onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
           setProfile(doc.data());
-          getImage(doc.data().profilePicUrl);          
-          doc.data().familyCode.forEach(code => setPostIds([...postIds, code._id]));
+          getImage(doc.data().profilePicUrl);
+          setGroup(doc.data().familyCode[0])  
         });
         console.log('It ran again');
 
@@ -127,7 +116,7 @@ export const AuthContextProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, posts, postIds }}>
+    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, group}}>
       {children}
     </UserContext.Provider>
   );
