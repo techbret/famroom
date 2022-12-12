@@ -6,7 +6,7 @@ import { UserAuth } from "../../context/UseContext/AuthContext";
 import Modal from "../Modal/Modal";
 
 export default function ProfileCard() {
-  const { profile } = UserAuth();
+  const { profile, profileUrl } = UserAuth();
   const [modal, setModal] = useState(false)
 
   const handleModal = (e) => {
@@ -20,7 +20,7 @@ export default function ProfileCard() {
       <div className="mx-auto text-center shadow-lg bg-white p-5 rounded-md">
         <img
           className="mx-auto mt-4 mb-4 rounded-lg h-24 shadow-lg"
-          src="https://firebasestorage.googleapis.com/v0/b/fambook-c536f.appspot.com/o/userProfilePics%2FSF5BIlAfJ1cFTPz6s1eHbWG3DM53profilePic?alt=media&token=d9b1c589-d354-4ed4-b849-2e3e1c9888bf"
+          src={profileUrl}
           alt=""
         />
         <p className="text-xl font-bold">

@@ -33,17 +33,17 @@ export default function HomeSignUp() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-lime-100">
+    <div className="relative min-h-screen overflow-hidden bg-emerald-100">
       <div className="relative pt-6 pb-16 sm:pb-24">
         <main className="mt-12 sm:mt-12">
           <div className="mx-auto max-w-7xl">
             <div className="lg:grid lg:grid-cols-12 lg:gap-8">
               <div className="px-4 sm:px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:items-center lg:text-left">
                 <div>
-                  <h1 className="mt-4 text-4xl font-bold tracking-tight text-lime-900 sm:text-5xl md:text-6xl">
+                  <h1 className="mt-4 text-4xl font-bold tracking-tight text-emerald-900 sm:text-5xl md:text-6xl">
                     Keep your family connected
                   </h1>
-                  <p className="mt-3 text-base text-lime-900 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                  <p className="mt-3 text-base text-emerald-900 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                     Famtree is designed to be like any other social media site,
                     except its JUST FOR FAMILIES! We have designed multiple
                     features that are specifically designed to keep your family
@@ -51,26 +51,26 @@ export default function HomeSignUp() {
                   </p>
                   <form action="">
                     <input type="text" className="mt-4 p-3 rounded-md" placeholder="Have a Family Code?" />
-                    <button className="ml-4 rounded-md border border-transparent bg-lime-600 py-3 px-5 text-sm font-medium text-white shadow-sm hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2">Sign Up</button>
+                    <button className="ml-4 rounded-md border border-transparent bg-emerald-600 py-3 px-5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">Sign Up</button>
                   </form>
 
-                  <p className="mt-8 text-base font-semibold text-lime-900 sm:mt-10">
+                  <p className="mt-8 text-base font-semibold text-emerald-900 sm:mt-10">
                     Features Include
                   </p>
                   <div className="mt-5 w-full sm:mx-auto sm:max-w-lg lg:ml-0">
                     <div className="flex flex-wrap items-start justify-between">
                       <div className="flex justify-center px-1">
-                        <h1 className="text-2xl font-bold text-lime-900">
+                        <h1 className="text-2xl font-bold text-emerald-900">
                           Family Calander
                         </h1>
                       </div>
                       <div className="flex justify-center px-1">
-                        <h1 className="text-2xl font-bold text-lime-900">
+                        <h1 className="text-2xl font-bold text-emerald-900">
                           Chatrooms
                         </h1>
                       </div>
                       <div className="flex justify-center px-1">
-                        <h1 className="text-2xl font-bold text-lime-900">
+                        <h1 className="text-2xl font-bold text-emerald-900">
                           Status Logs
                         </h1>
                       </div>
@@ -174,7 +174,7 @@ export default function HomeSignUp() {
                             autoComplete="name"
                             placeholder="Username"
                             required
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-lime-500 focus:ring-lime-500 sm:text-sm"
+                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm"
                             onChange={(e) => {
                               setDisplayName(e.target.value);
                             }}
@@ -189,7 +189,7 @@ export default function HomeSignUp() {
                             autoComplete="email"
                             placeholder="Email"
                             required
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-lime-500 focus:ring-lime-500 sm:text-sm"
+                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm"
                             onChange={(e) => setEmail(e.target.value)}
                           />
                         </div>
@@ -202,7 +202,7 @@ export default function HomeSignUp() {
                             placeholder="Password"
                             autoComplete="current-password"
                             required
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-lime-500 focus:ring-lime-500 sm:text-sm"
+                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm"
                             onChange={(e) => setPassword(e.target.value)}
                           />
                         </div>
@@ -210,7 +210,7 @@ export default function HomeSignUp() {
                         <div>
                           <button
                             type="submit"
-                            className="flex w-full justify-center rounded-md border border-transparent bg-lime-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                            className="flex w-full justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                             onClick={createNewAccount}
                           >
                             Create your account
