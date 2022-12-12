@@ -19,6 +19,7 @@ export const AuthContextProvider = ({ children }) => {
   const [profile, setProfile] = useState({})
   const [profileUrl, setProfileUrl] = useState('');
   const [posts, setPosts] = useState([])
+  const [postIds, setPostIds] = useState([])
 
   const userID = useParams();
 
@@ -62,6 +63,8 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  
+
   const createGroup = async ({ groupData }) => {
     try {
       await setDoc(doc(db, "groups", groupData.id), groupData).then(await setDoc(doc(db, "posts", groupData.id), { "posts": [] })).then(
@@ -88,17 +91,19 @@ export const AuthContextProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  const getPosts = async () => {
-    const docRef = doc(db, "posts", "lava824");
-    const docSnapshot = await getDoc(docRef);
+  // const getPosts = async () => {
+  //   const docRef = doc(db, "users", user.uid);
+  //   const docSnapshot = await getDoc(docRef);
+  //   let newArr = []    
 
-    if (docSnapshot.exists) {
-      const posts = docSnapshot.data().posts;
-      setPosts(posts);
-    } else {
-      throw new Error("Document does not exist");
-    }
-  };
+  //   if (docSnapshot.exists) {
+      
+  //     docSnapshot.data().familyCode.map(code => newArr.push(code._id));
+  //     console.log(newArr);
+  //   } else {
+  //     throw new Error("Document does not exist");
+  //   }
+  // };
 
   // const getAllPosts = async () => {
   //   const q = query(collection(db, "posts"));
@@ -120,6 +125,14 @@ export const AuthContextProvider = ({ children }) => {
   //   });
   // };
 
+  // const test = async () => {
+  //   try {
+  //     await profile.familyCode.forEach(code => console.log(code._id))
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -128,11 +141,9 @@ export const AuthContextProvider = ({ children }) => {
         setIsLoggedIn(true);
         onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
           setProfile(doc.data());
-          getImage(doc.data().profilePicUrl)
+          getImage(doc.data().profilePicUrl);          
+          doc.data().familyCode.forEach(code => setPostIds([...postIds, code._id]));
         });
-        onSnapshot(doc(db, "posts", "lava824"), (doc) => {
-          getPosts();
-        })
         console.log('It ran again');
 
 
@@ -145,8 +156,10 @@ export const AuthContextProvider = ({ children }) => {
     };
   }, []);
 
+
+
   return (
-    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, posts }}>
+    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, posts, postIds }}>
       {children}
     </UserContext.Provider>
   );

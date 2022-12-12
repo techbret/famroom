@@ -110,7 +110,7 @@ export default function NavBar() {
                         <Menu.Button className="flex rounded-lg bg-emerald-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-800">
                           <span className="sr-only">Open user menu</span>
                           <img
-                            className="h-10 w-10 rounded-lg bg-white"
+                            className="h-10 w-10 rounded-lg bg-white object-fit-cover object-position-center"
                             src={profileUrl}
                             alt=""
                           />
