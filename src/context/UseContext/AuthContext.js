@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { auth, storage } from "../../config/firebase";
 import { db } from "../../config/firebase";
-import { setDoc, doc, getDoc, updateDoc, arrayUnion, onSnapshot, query, collection, where, getDocs } from "firebase/firestore";
+import { setDoc, doc, getDoc, updateDoc, arrayUnion, onSnapshot, query, collection, where, getDocs, addDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { getDownloadURL, ref } from "firebase/storage";
 
@@ -53,13 +53,22 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
-  const createPost = async ({ postData }) => {
+  // const createPost = async ({ postData }) => {
+  //   try {
+  //     await updateDoc(doc(db, "posts", postData.groupID), {
+  //       posts: arrayUnion({ postData })
+  //     });
+  //   } catch (err) {
+  //     alert(`There was an error ${err}`)
+  //   }
+  // }
+
+  const createPost = async ( postData ) => {
     try {
-      await updateDoc(doc(db, "posts", postData.groupID), {
-        posts: arrayUnion({ postData })
-      });
-    } catch (err) {
-      alert(`There was an error ${err}`)
+      const newID = postData;      
+      await addDoc(collection(db, 'group-posts', newID.groupID, 'posts' ),  postData)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -90,48 +99,7 @@ export const AuthContextProvider = ({ children }) => {
     setIsLoggedIn(false);
     return signOut(auth);
   };
-
-  // const getPosts = async () => {
-  //   const docRef = doc(db, "users", user.uid);
-  //   const docSnapshot = await getDoc(docRef);
-  //   let newArr = []    
-
-  //   if (docSnapshot.exists) {
-      
-  //     docSnapshot.data().familyCode.map(code => newArr.push(code._id));
-  //     console.log(newArr);
-  //   } else {
-  //     throw new Error("Document does not exist");
-  //   }
-  // };
-
-  // const getAllPosts = async () => {
-  //   const q = query(collection(db, "posts"));
-  //   const querySnapshot = await getDocs(q);
-
-  //   querySnapshot.forEach((post) => {
-  //     // doc.data() is never undefined for query doc snapshots
-  //     const arr = []
-  //     const docRef = doc(db, "users", user.uid);
-  //     const docSnap = getDoc(docRef).data();      
-  //     for (let i = 0; docSnap.familyCode.length; i++) {
-  //       if (post.id === profile.familyCode[i]) {
-  //         console.log(post.id, " => ", post.data());
-  //         arr.push(post.data())
-          
-  //       }
-  //     }
-  //     console.log(arr)  
-  //   });
-  // };
-
-  // const test = async () => {
-  //   try {
-  //     await profile.familyCode.forEach(code => console.log(code._id))
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
+  
 
 
   useEffect(() => {

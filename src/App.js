@@ -12,6 +12,7 @@ import NewProfile from "./components/ProfileCreation/NewProfile";
 import { AuthContextProvider } from "./context/UseContext/AuthContext";
 import ProtectedRoute from './config/ProtectedRoute';
 import CreateGroup from "./components/CreateGroup/CreateGroup";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/settings" element={<Settings />} />
           <Route
             path="/"
             element={
