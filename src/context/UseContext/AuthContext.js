@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { auth, storage } from "../../config/firebase";
 import { db } from "../../config/firebase";
-import { setDoc, doc, getDoc, updateDoc, arrayUnion, onSnapshot} from "firebase/firestore";
+import { setDoc, doc, getDoc, updateDoc, arrayUnion, onSnapshot, query, collection, where, getDocs } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { getDownloadURL, ref } from "firebase/storage";
 
@@ -38,33 +38,33 @@ export const AuthContextProvider = ({ children }) => {
     });
   };
 
-  const getImage = async (url) => { 
+  const getImage = async (url) => {
     const imgUrl = await getDownloadURL(ref(storage, url));
     setProfileUrl(imgUrl);
-  }  
+  }
 
-  const updateUser = async ({userData}) => {
+  const updateUser = async ({ userData }) => {
     try {
-        await updateDoc(doc(db, "users", user.uid), userData);
+      await updateDoc(doc(db, "users", user.uid), userData);
     } catch (err) {
-        console.log(err.message);
-        alert(`There was an error: ${err}`)
+      console.log(err.message);
+      alert(`There was an error: ${err}`)
     }
   }
 
-  const createPost = async ({postData}) => {
+  const createPost = async ({ postData }) => {
     try {
       await updateDoc(doc(db, "posts", postData.groupID), {
-        posts: arrayUnion({postData})
+        posts: arrayUnion({ postData })
       });
     } catch (err) {
       alert(`There was an error ${err}`)
     }
   }
 
-  const createGroup = async ({groupData}) => {
+  const createGroup = async ({ groupData }) => {
     try {
-      await setDoc(doc(db, "groups", groupData.id), groupData).then(await setDoc(doc(db, "posts", groupData.id), {"posts": []})).then(
+      await setDoc(doc(db, "groups", groupData.id), groupData).then(await setDoc(doc(db, "posts", groupData.id), { "posts": [] })).then(
         await updateDoc(doc(db, "users", groupData.admin), {
           familyCode: arrayUnion({
             _id: groupData.id,
@@ -73,25 +73,25 @@ export const AuthContextProvider = ({ children }) => {
           })
         })
       );
-      
+
     } catch (err) {
       alert(`There was an error ${err}`)
     }
   }
 
-  const signIn = (email, password) => {       
+  const signIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logout = () => {
     setIsLoggedIn(false);
     return signOut(auth);
-  };  
-  
+  };
+
   const getPosts = async () => {
     const docRef = doc(db, "posts", "lava824");
     const docSnapshot = await getDoc(docRef);
-  
+
     if (docSnapshot.exists) {
       const posts = docSnapshot.data().posts;
       setPosts(posts);
@@ -99,10 +99,30 @@ export const AuthContextProvider = ({ children }) => {
       throw new Error("Document does not exist");
     }
   };
-  
+
+  // const getAllPosts = async () => {
+  //   const q = query(collection(db, "posts"));
+  //   const querySnapshot = await getDocs(q);
+
+  //   querySnapshot.forEach((post) => {
+  //     // doc.data() is never undefined for query doc snapshots
+  //     const arr = []
+  //     const docRef = doc(db, "users", user.uid);
+  //     const docSnap = getDoc(docRef).data();      
+  //     for (let i = 0; docSnap.familyCode.length; i++) {
+  //       if (post.id === profile.familyCode[i]) {
+  //         console.log(post.id, " => ", post.data());
+  //         arr.push(post.data())
+          
+  //       }
+  //     }
+  //     console.log(arr)  
+  //   });
+  // };
+
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {      
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
         setIsLoggedIn(true);
@@ -112,13 +132,13 @@ export const AuthContextProvider = ({ children }) => {
         });
         onSnapshot(doc(db, "posts", "lava824"), (doc) => {
           getPosts();
-        }) 
+        })
         console.log('It ran again');
-        
-        
+
+
       } else {
         setIsLoggedIn(false);
-      };    
+      };
     });
     return () => {
       unsubscribe();

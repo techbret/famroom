@@ -9,7 +9,7 @@ function classNames(...classes) {
 }
 
 export default function ThoughtLog() {
-  const { profileUrl, profile, posts } = UserAuth();
+  const { posts } = UserAuth();
 
 
   return (

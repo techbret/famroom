@@ -52,8 +52,6 @@ export default function NewShareSomething() {
         timestamp: timestamp.toDate()
     }   
 
-    console.log(profileUrl)
-
 
     const handleSubmitPost = (e) => {
         e.preventDefault();
@@ -67,7 +65,7 @@ export default function NewShareSomething() {
 
     return (
         <form action="#" className="relative shadow-lg bg-white">
-            <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-lime-500 focus-within:ring-1 focus-within:ring-lime-500">                
+            <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500">                
                 <input
                     type="text"
                     name="title"
@@ -188,15 +186,15 @@ export default function NewShareSomething() {
 
                         <button
                             type="button"
-                            className=" group -my-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                            className=" group -my-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
-                            <PhotoIcon className="-ml-1 mr-2 h-5 w-5 text-lime-600" aria-hidden="true" />
+                            <PhotoIcon className="-ml-1 mr-2 h-5 w-5 text-emerald-600" aria-hidden="true" />
                             Photo
                         </button>
 
                         <button
                             type="button"
-                            className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                            className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
                             <VideoCameraIcon className="-ml-1 mr-2 h-5 w-5 text-blue-500" aria-hidden="true" />
                             Video
@@ -204,7 +202,7 @@ export default function NewShareSomething() {
 
                         <button
                             type="button"
-                            className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                            className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
                             <CalendarIcon className="-ml-1 mr-2 h-5 w-5 text-red-500" aria-hidden="true" />
                             Event
@@ -214,7 +212,7 @@ export default function NewShareSomething() {
                     <div className="flex-shrink-0">
                         <button
                             type="submit"
-                            className="inline-flex items-center rounded-md border border-transparent bg-lime-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                            className="inline-flex items-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                             onClick={handleSubmitPost}
                         >
                             Post

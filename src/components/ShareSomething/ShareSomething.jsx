@@ -86,11 +86,11 @@ function AddFiles() {
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              enterFrom="opacity-0 tranemerald-y-4 sm:tranemerald-y-0 sm:scale-95"
+              enterTo="opacity-100 tranemerald-y-0 sm:scale-100"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              leaveFrom="opacity-100 tranemerald-y-0 sm:scale-100"
+              leaveTo="opacity-0 tranemerald-y-4 sm:tranemerald-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
@@ -309,7 +309,7 @@ export default function ShareSomething() {
                       id="group"
                       name="group"
                       autoComplete="group"
-                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-lime-500 focus:ring-lime-500 sm:max-w-xs sm:text-sm"
+                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:max-w-xs sm:text-sm"
                     >
                       <option>Select All Groups</option>
                       {profile.familyCode?.map((item) => (
@@ -323,7 +323,7 @@ export default function ShareSomething() {
                   <div className="mt-1 sm:col-span-1 sm:mt-0">
                     <button
                       type="submit"
-                      className="inline-flex items-center rounded-md border border-transparent bg-lime-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                      className="inline-flex items-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                       onClick={handlePost}
                     >
                       Post
