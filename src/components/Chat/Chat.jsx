@@ -1,32 +1,30 @@
 import React, { useState } from 'react'
 import { getDatabase, ref, set } from "firebase/database";
+import { UserAuth } from '../../context/UseContext/AuthContext';
+import { useParams } from 'react-router-dom';
+import { collection } from 'firebase/firestore';
 
 export default function CreateAccount() {
-    const [name, setUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [imageUrl, setImageUrl] = useState('')
+    const { profile } = UserAuth()
+    const [message, setMessage] = useState('')
 
-    const userId = "12bngfojeojsfalk"
+       
 
     function writeUserData() {
         const db = getDatabase();
-        set(ref(db, 'users/' + userId), {
-            username: name,
-            email: email,
-            profile_picture: imageUrl
+        set(collection(db, 'chats/' + profile.displayName), {
+            username: profile.displayName,
+            message: message,                        
         });
-    }
-
-   
+    }  
 
 
     return (
         <div>
-            <h1>This is a Test</h1>
+            <h1>Chat</h1>
             <form>
-                <input type="text" placeholder='UserName' onChange={e => setUsername(e.target.value)} />
-                <input type="email" name="email" id="email" placeholder='Email' onChange={e => setEmail(e.target.value)} />
-                <input type="text" placeholder='imageUrl' onChange={e => setImageUrl(e.target.value)} />
+                <input type="text" placeholder='UserName' onChange={e => setMessage(e.target.value)} />
+                
                 <button onClick={writeUserData()}>Test</button>
             </form>
 

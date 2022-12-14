@@ -13,6 +13,7 @@ import { AuthContextProvider } from "./context/UseContext/AuthContext";
 import ProtectedRoute from './config/ProtectedRoute';
 import CreateGroup from "./components/CreateGroup/CreateGroup";
 import Settings from "./pages/Settings/Settings";
+import Chat from "./components/Chat/Chat";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/upload" element={<UploadPhoto />} />
           <Route path="/user/:userId" element={<NewProfile />} />
           <Route path="/create-group" element={<CreateGroup />} />
+          <Route path="/chat/:id" element={<Chat />} />
         </Routes>
       </AuthContextProvider>
     </div>
