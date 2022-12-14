@@ -41,10 +41,12 @@ function classNames(...classes) {
 export default function NewShareSomething() {
   const { profile, createPost, profileUrl } = UserAuth();
   const [assigned, setAssigned] = useState(assignees[0]);
-  const [labelled, setLabelled] = useState(labels[0]);
-  const [dated, setDated] = useState(dueDates[0]);
   const [post, setPost] = useState("Share your thoughts...");
   const [title, setTitle] = useState("Title");
+
+  const allGroups = {
+    name: "All Groups"
+  }
 
   const handleSubmitPost = (e) => {
     e.preventDefault();
@@ -61,6 +63,7 @@ export default function NewShareSomething() {
           displayName: profile.displayName,
           profileImg: profileUrl,
           timestamp: serverTimestamp(),
+          profileID: profile._id
         });
       });
     } else {
@@ -73,14 +76,16 @@ export default function NewShareSomething() {
         displayName: profile.displayName,
         profileImg: profileUrl,
         timestamp: serverTimestamp(),
+        profileID: profile._id
       });
       setAssigned(assignees[0]);
+      setTitle("Title")
     }
   };
-
+console.log(assigned)
   return (
-    <form action="#" className="relative shadow-lg bg-white">
-      <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500">
+    <form action="#" className="relative shadow-lg bg-white rounded-lg">
+      <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
         <input
           type="text"
           name="title"
@@ -169,8 +174,9 @@ export default function NewShareSomething() {
                             active ? "bg-gray-100" : "bg-white",
                             "relative cursor-default select-none py-2 px-3"
                           )
+                          
                         }
-                        value="All Groups"
+                        value={allGroups}
                       >
                         <div className="flex items-center">
                           <UsersIcon
@@ -178,12 +184,13 @@ export default function NewShareSomething() {
                             aria-hidden="true"
                           />
 
-                          <span className="ml-3 block truncate font-medium">
+                          <span className="ml-3 block truncate font-medium" >
                             All Groups
                           </span>
+                          
                         </div>
                       </Listbox.Option>
-                      {profile.familyCode?.map((assignee) => (
+                      {profile.groups?.map((assignee) => (
                         <Listbox.Option
                           key={assignee._id}
                           className={({ active }) =>
@@ -225,10 +232,10 @@ export default function NewShareSomething() {
           <div className="flex">
             <button
               type="button"
-              className=" group -my-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              className=" group -my-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               <PhotoIcon
-                className="-ml-1 mr-2 h-5 w-5 text-emerald-600"
+                className="-ml-1 mr-2 h-5 w-5 text-indigo-600"
                 aria-hidden="true"
               />
               Photo
@@ -236,7 +243,7 @@ export default function NewShareSomething() {
 
             <button
               type="button"
-              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               <VideoCameraIcon
                 className="-ml-1 mr-2 h-5 w-5 text-blue-500"
@@ -247,7 +254,7 @@ export default function NewShareSomething() {
 
             <button
               type="button"
-              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               <CalendarIcon
                 className="-ml-1 mr-2 h-5 w-5 text-red-500"
@@ -259,7 +266,7 @@ export default function NewShareSomething() {
           <div className="flex-shrink-0">
             <button
               type="submit"
-              className="inline-flex items-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick={handleSubmitPost}
             >
               Post

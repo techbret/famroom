@@ -9,13 +9,7 @@ import {
   StarIcon,
 } from "@heroicons/react/20/solid";
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp,
-  onSnapshot,
-  query,
-  orderBy,
+  toDate
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
@@ -24,81 +18,20 @@ function classNames(...classes) {
 }
 
 export default function ThoughtLog() {
-  const { posts, profile, profileUrl } = UserAuth();
+  const { posts, profile, messages } = UserAuth();
   const [postIDs, setPostIDs] = useState([]);
-  const [messages, setMessages] = useState([]);
+  
   const [group, setGroup] = useState('lava884');
 
-  const pid = profile._id;
+  const convertToString = (date) => {
+    const newDate = date.toDate();
+    const dateString = newDate.toLocaleDateString();
 
-  function getMessages(callback, groupRef) {
-    return onSnapshot(
-      query(
-        collection(db, "group-posts", groupRef, "posts"),
-        orderBy("timestamp", "desc")
-      ),
-      (querySnapshot) => {
-        const messages = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        callback(messages);
-      }
-    );
+    return dateString;
   }
-
-  useEffect(() => {
-    const unsubscribe = getMessages(setMessages, group);
-    console.log(messages);
-    return unsubscribe;
-  }, [messages]);
-
-  // const getPosts = async (code) => {
-  //   const postsRef = doc(db, "posts", code);
-  //   const data = await getDoc(postsRef);
-
-  //   if (data.exists()) {
-  //     if (data.data().posts.length > 0)
-  //     for (let i = 0; i < data.data().posts.length; i++) {
-  //       setPostIDs(prevPostIDs => [...prevPostIDs, data.data().posts[i]])
-  //     }
-  //   } else {
-  //     console.log('DoesNot Exist')
-  //   }
-
-  // }
-
-  // useEffect(() => {
-  //   if (pid) {
-  //     onSnapshot(doc(db, "users", pid), (doc) => {
-  //       doc.data().familyCode.forEach(code =>
-  //         getPosts(code._id)
-  //         )
-  //     })
-  //   } else {
-  //     console.log("Nothing")
-  //   }
-  //   console.log("Running")
-
-  // }, [])
 
   return (
     <div>
-      <select
-        id="group"
-        name="group"
-        autoComplete="group"
-        className="mt-4 lock w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:max-w-xs sm:text-sm"
-        onChange={(e) => {setGroup(e.target.value)}}
-      >
-        <option>Select A Group</option>
-        {profile.familyCode?.map((item) => (
-          <option key={item._id} value={item._id} to={item.link} >
-            {item.name}
-          </option>
-        ))}
-      </select>
-
       {messages.map((post) => (
         <div className="bg-white px-4 py-5 sm:px-6 border mt-4 rounded-sm shadow-md">
           <div className="flex space-x-3">
@@ -126,10 +59,12 @@ export default function ThoughtLog() {
             </div>
             <Menu as="div" className="absolute inline-block right-4 text-left">
               <div>
+              
                 <Menu.Button className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600">
                   <span className="sr-only">Open options</span>
+                  
                   <EllipsisHorizontalIcon
-                    className="h-5 w-5"
+                    className="h-5 w-5 text-indigo-500"
                     aria-hidden="true"
                   />
                 </Menu.Button>
@@ -205,13 +140,21 @@ export default function ThoughtLog() {
                     </Menu.Item>
                   </div>
                 </Menu.Items>
+                
               </Transition>
+              
             </Menu>
+            
 
-            <div className="flex flex-shrink-0 self-center"></div>
+            
           </div>
+          <div className="relative  ">
+            <p className="absolute bottom-0 right-0">{profile.timestamp ? convertToString(profile.timestamp) : ''}</p> 
+            </div>
         </div>
+        
       ))}
+      
     </div>
   );
 }

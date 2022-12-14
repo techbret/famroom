@@ -28,7 +28,7 @@ export default function UploadPhoto() {
           {file ? (
             <p>{file.name}</p>
           ) : (
-            <UserCircleIcon className="h-12 mx-auto text-emerald-600" />
+            <UserCircleIcon className="h-12 mx-auto text-indigo-600" />
           )}
 
           <span className="mt-2 block text-sm font-medium text-gray-900">

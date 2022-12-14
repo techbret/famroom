@@ -1,7 +1,4 @@
-import { PencilIcon } from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { loggedInState, userState } from "../../context/recoil/loginAtoms";
+import React, { useState } from "react";
 import { UserAuth } from "../../context/UseContext/AuthContext";
 import Modal from "../Modal/Modal";
 
@@ -20,7 +17,7 @@ export default function ProfileCard() {
       <div className="mx-auto text-center shadow-lg bg-white p-5 rounded-md">
         <div className="flex flex-wrap justify-center ">
         <img
-          className="mx-auto mt-4 mb-4 w-24 h-24 object-center shadow-lg"
+          className="mx-auto mt-4 mb-4 w-24 h-24 object-center rounded-lg shadow-lg"
           src={profileUrl}
           alt=""
         />
@@ -42,7 +39,7 @@ export default function ProfileCard() {
         <div>
           <div className="grid grid-cols-3 gap-4 mt-4 ">
             <div className="text-md">
-              <div className="font-bold">256</div> <div>Posts</div>
+              <div className="font-bold">{profile?.postCount || 0}</div> <div>Posts</div>
             </div>
             <div>
               <div className="font-bold">123</div> <div>Connections</div>
