@@ -1,20 +1,15 @@
 import React, { useState } from "react";
-import { storage } from "../../config/firebase";
-import { ref, uploadBytes } from "firebase/storage";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { UserAuth } from "../../context/UseContext/AuthContext";
 
 export default function UploadPhoto() {
   const [file, setFile] = useState(null);
-  let { userId } = useParams();
-  let { profile } = UserAuth();
+  let { profile, uploadProfile } = UserAuth();
   const navigate = useNavigate();
 
   const uploadImage = () => {
-    if (file == null) return;
-    const imageRef = ref(storage, "/userProfilePics/" + profile.displayName + "_profilepic");
-    uploadBytes(imageRef, file);
+    uploadProfile(file)
     navigate('/profile')
   };
 

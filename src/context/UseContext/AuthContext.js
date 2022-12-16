@@ -9,7 +9,7 @@ import { auth, storage } from "../../config/firebase";
 import { db } from "../../config/firebase";
 import { setDoc, doc, getDoc, updateDoc, arrayUnion, onSnapshot, query, collection, where, increment, addDoc, orderBy } from "firebase/firestore";
 import { useParams } from "react-router-dom";
-import { getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const UserContext = createContext();
 
@@ -21,7 +21,11 @@ export const AuthContextProvider = ({ children }) => {
   const [group, setGroup] = useState('');
   const [messages, setMessages] = useState([]);
 
-  const userID = useParams();
+  const uploadProfile = (file) => {
+    if (file == null) return;
+    const imageRef = ref(storage, "/userProfilePics/" + profile.displayName + "_profilepic");
+    uploadBytes (imageRef, file);
+  };
 
   const createUser = (email, password, displayName) => {
     return createUserWithEmailAndPassword(
@@ -141,7 +145,7 @@ export const AuthContextProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, group, messages}}>
+    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, group, messages, uploadProfile}}>
       {children}
     </UserContext.Provider>
   );

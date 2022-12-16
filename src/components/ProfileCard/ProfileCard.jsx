@@ -16,11 +16,16 @@ export default function ProfileCard() {
         
       <div className="mx-auto text-center shadow-lg bg-white p-5 rounded-md">
         <div className="flex flex-wrap justify-center ">
-        <img
-          className="mx-auto mt-4 mb-4 w-24 h-24 object-center rounded-lg shadow-lg"
-          src={profileUrl}
-          alt=""
-        />
+          {profileUrl ? (
+            <img
+            className="mx-auto mt-4 mb-4 w-24 h-24 object-center rounded-lg shadow-lg"
+            src={profileUrl}
+            alt=""
+          />
+          ) : (
+            <div className="mx-auto mt-4 mb-4 w-24 h-24 object-center rounded-lg shadow-lg bg-white">BJ</div>
+          )}
+        
         </div>
         <p className="text-xl font-bold">
           {profile.firstName} {profile.lastName}
