@@ -5,12 +5,12 @@ import { UserAuth } from "../../context/UseContext/AuthContext";
 
 export default function UploadPhoto() {
   const [file, setFile] = useState(null);
-  let { profile, uploadProfile } = UserAuth();
+  let { uploadProfile } = UserAuth();
   const navigate = useNavigate();
 
   const uploadImage = () => {
     uploadProfile(file)
-    navigate('/profile')
+    navigate('/profile');
   };
 
   return (

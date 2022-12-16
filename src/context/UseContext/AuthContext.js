@@ -24,7 +24,9 @@ export const AuthContextProvider = ({ children }) => {
   const uploadProfile = (file) => {
     if (file == null) return;
     const imageRef = ref(storage, "/userProfilePics/" + profile.displayName + "_profilepic");
-    uploadBytes (imageRef, file);
+    uploadBytes(imageRef, file);
+    updateDoc(doc(db, "users", user.uid), {uploadedPicture: true});
+    
   };
 
   const createUser = (email, password, displayName) => {
