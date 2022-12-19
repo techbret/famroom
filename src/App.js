@@ -14,6 +14,7 @@ import ProtectedRoute from './config/ProtectedRoute';
 import CreateGroup from "./components/CreateGroup/CreateGroup";
 import Settings from "./pages/Settings/Settings";
 import Chat from "./components/Chat/Chat";
+import JoinGroup from "./components/JoinGroup/JoinGroup";
 
 function App() {
   return (
@@ -44,7 +45,8 @@ function App() {
           <Route path="/upload" element={<UploadPhoto />} />
           <Route path="/user/:userId" element={<NewProfile />} />
           <Route path="/create-group" element={<CreateGroup />} />
-          <Route path="/chat/:id" element={<Chat />} />
+          <Route path="/chat/:chatID" element={<Chat />} />
+          <Route path="/join" element={<JoinGroup />} />
         </Routes>
       </AuthContextProvider>
     </div>

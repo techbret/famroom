@@ -7,9 +7,10 @@ import {
 } from "firebase/auth";
 import { auth, storage } from "../../config/firebase";
 import { db } from "../../config/firebase";
-import { setDoc, doc, getDoc, updateDoc, arrayUnion, onSnapshot, query, collection, where, increment, addDoc, orderBy } from "firebase/firestore";
+import { setDoc, doc, getDoc, updateDoc, arrayUnion, onSnapshot, query, collection, where, increment, addDoc, orderBy, deleteField, arrayRemove, serverTimestamp } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { displayName } from "@heroicons/react/24/outline/MinusCircleIcon";
 
 const UserContext = createContext();
 
@@ -20,6 +21,7 @@ export const AuthContextProvider = ({ children }) => {
   const [profileUrl, setProfileUrl] = useState('');
   const [group, setGroup] = useState('');
   const [messages, setMessages] = useState([]);
+  const [chats, setChats] = useState([])
 
   const uploadProfile = (file) => {
     if (file == null) return;
@@ -59,6 +61,56 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const sendMessage = async (roomID, userData, text) => {
+    try {
+      await addDoc(collection(db, 'chat-rooms', roomID, 'messages'), {
+        uid: userData._id,
+        displayName: userData.displayName,
+        text: text.trim(),
+        timestamp: serverTimestamp(),
+      })
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const getMessages = (roomID, callback) => {
+    const q = query(collection(db, 'chat-rooms', roomID, 'messages'), orderBy('timestamp', 'asc'));
+    return onSnapshot(q, (querySnapshot) => {
+      const messages = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      callback(messages)
+    })
+  }
+
+  
+
+  const joinGroup = async ({joinData}) => {
+    try {
+      await updateDoc(doc(db, "groups", joinData.id), {
+        pendingMembers: arrayUnion({
+          firstName: joinData.firstName,
+          lastName: joinData.lastName,
+          link: joinData.displayName,
+          profileID: joinData.profileID,
+        })
+      })
+      await updateDoc(doc(db, "users", joinData.profileID), {
+        pendingGroups: arrayUnion({
+          _id: joinData.id,
+          link: '/' + joinData.id,
+          name: joinData.id + ' (pending)'
+        })
+      })
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
    const createPost = async ( postData ) => {
     try {     
       await addDoc(collection(db, 'posts'),  postData);
@@ -86,6 +138,22 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const removeFromGroup = async (userID, groupID, link, name) => {
+    try {
+      await updateDoc(doc(db, "users", userID), {
+        familyCode: arrayRemove(groupID),
+        groups: arrayRemove({
+          _id: groupID,
+          link: link,
+          name: name
+        })
+      })
+    } catch (err) {
+      console.log(err)
+
+    }
+  }
+
   const signIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
@@ -95,21 +163,6 @@ export const AuthContextProvider = ({ children }) => {
     return signOut(auth);
   };
   
-  // const getPosts(callback, groupRef) {
-  //   return onSnapshot(
-  //     query(
-  //       collection(db, "group-posts", groupRef, "posts"),
-  //       orderBy("timestamp", "desc")
-  //     ),
-  //     (querySnapshot) => {
-  //       const posts = querySnapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-  //       callback(posts);
-  //     }
-  //   )
-  // }
 
   const getPosts = (id) => {
     const q = query(collection(db, "posts"), where("groupID", "in", id.familyCode), orderBy("timestamp", "desc"));
@@ -119,10 +172,11 @@ export const AuthContextProvider = ({ children }) => {
         posts.push(doc.data());
       });
       setMessages(posts)
-      console.log(posts)
       return unsuscribe()
     });
   }
+
+  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -147,7 +201,7 @@ export const AuthContextProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, group, messages, uploadProfile}}>
+    <UserContext.Provider value={{ createUser, user, logout, signIn, isLoggedIn, profile, updateUser, getImage, profileUrl, createPost, createGroup, group, messages, uploadProfile, removeFromGroup, joinGroup, getMessages, sendMessage, chats}}>
       {children}
     </UserContext.Provider>
   );
