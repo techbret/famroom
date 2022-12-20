@@ -19,7 +19,7 @@ export default function ChatRoomBlock() {
 
   return (
     <div className="bg-zinc-100">
-      <div className="divide-y divide-solid divide-indigo-300">
+      <div className="divide-y divide-solid divide-emerald-300">
         <h1 className="text-lg font-bold text-zinc-600  divide-y divide-dashed">
           Chatrooms
         </h1>
@@ -28,13 +28,13 @@ export default function ChatRoomBlock() {
       {profile.groups?.map((item, index) => (
         <div className="flex items-start" key={index}>
           <Link
-            className="flex items-start text-indigo-600"
+            className="flex items-start text-emerald-600"
             to={"/chat" + item.link}
           >
             <ChatBubbleLeftRightIcon className="h-6 mr-1" /> {item.name}
           </Link>
           <button
-            className="flex items-start mt-1.5 ml-4 text-xs text-zinc-300 hover:text-indigo-500"
+            className="flex items-start mt-1.5 ml-4 text-xs text-zinc-300 hover:text-emerald-500"
             onClick={() => {
               handleClick(profile._id, item._id, item.link, item.name);
             }}
@@ -49,13 +49,13 @@ export default function ChatRoomBlock() {
       {profile.pendingGroups?.map((item, index) => (
         <div className="flex items-start" key={index}>
           <Link
-            className="flex items-start text-indigo-300 italic"
+            className="flex items-start text-emerald-300 italic"
             to={"/chat" + item.link}
           >
             <ChatBubbleLeftRightIcon className="h-6 mr-1" /> {item.name}
           </Link>
           <button
-            className="flex items-start mt-1.5 ml-4 text-xs text-zinc-300 hover:text-indigo-500"
+            className="flex items-start mt-1.5 ml-4 text-xs text-zinc-300 hover:text-emerald-500"
             onClick={() => {
               handleClick(profile._id, item._id, item.link, item.name);
             }}
@@ -68,12 +68,12 @@ export default function ChatRoomBlock() {
       ))}
 
       <div className="mt-6">
-        <Link to="/join" className="flex text-indigo-500">
+        <Link to="/join" className="flex text-emerald-500">
           <PlusCircleIcon className="h-5" />
           <p className="ml-1 text-sm">Join a Group</p>
         </Link>
 
-        <Link to="/create-group" className="flex text-indigo-500">
+        <Link to="/create-group" className="flex text-emerald-500">
           <PlusCircleIcon className="h-5" />
           <p className="ml-1 text-sm">Create a Group</p>
         </Link>

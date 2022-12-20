@@ -84,7 +84,7 @@ export default function NewShareSomething() {
   };
   return (
     <form action="#" className="relative shadow-lg bg-white rounded-lg">
-      <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+      <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500">
         <input
           type="text"
           name="title"
@@ -137,23 +137,14 @@ export default function NewShareSomething() {
                 </Listbox.Label>
                 <div className="relative">
                   <Listbox.Button className="relative inline-flex items-center whitespace-nowrap rounded-full bg-gray-50 py-2 px-2 text-sm font-medium text-gray-500 hover:bg-gray-100 sm:px-3">
-                    {assigned.value === null ? (
+                   
                       <UsersIcon
                         className="h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
-                    ) : (
-                      <UsersIcon
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    )}
 
                     <span
-                      className={classNames(
-                        assigned.value === null ? "" : "text-gray-900",
-                        "hidden truncate sm:ml-2 sm:block"
-                      )}
+                      className="hidden truncate sm:ml-2 sm:block"
                     >
                       {assigned.value === null ? "Select Group" : assigned.name}
                     </span>
@@ -231,10 +222,10 @@ export default function NewShareSomething() {
           <div className="flex">
             <button
               type="button"
-              className=" group -my-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className=" group -my-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
               <PhotoIcon
-                className="-ml-1 mr-2 h-5 w-5 text-indigo-600"
+                className="-ml-1 mr-2 h-5 w-5 text-emerald-600"
                 aria-hidden="true"
               />
               Photo
@@ -242,7 +233,7 @@ export default function NewShareSomething() {
 
             <button
               type="button"
-              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
               <VideoCameraIcon
                 className="-ml-1 mr-2 h-5 w-5 text-blue-500"
@@ -253,7 +244,7 @@ export default function NewShareSomething() {
 
             <button
               type="button"
-              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className=" group -my-2 ml-2 inline-flex items-center rounded border border-transparent bg-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
               <CalendarIcon
                 className="-ml-1 mr-2 h-5 w-5 text-red-500"
@@ -265,7 +256,7 @@ export default function NewShareSomething() {
           <div className="flex-shrink-0">
             <button
               type="submit"
-              className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex items-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
               onClick={handleSubmitPost}
             >
               Post

@@ -1,10 +1,8 @@
-import React, {  useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import ChatBlock from "../../components/ChatBlock/ChatBlock";
 import ChatRoomBlock from "../../components/ChatRoomBlock/ChatRoomBlock";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import NewShareSomething from "../../components/ShareSomething/NewShareSomething";
-import ShareSomething from "../../components/ShareSomething/ShareSomething";
 import ThoughtLog from "../../components/ThoughtLog/ThoughtLog";
 
 export default function Profile() {

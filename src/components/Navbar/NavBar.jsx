@@ -1,19 +1,34 @@
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { PlusIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowLeftOnRectangleIcon,
+  Bars3Icon,
+  BellIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import {
+  PlusIcon,
+  ChevronDownIcon,
+  ArrowLongRightIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
+import photo from "../../assets/blankPhoto.jpeg";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/UseContext/AuthContext";
 import Profile from "../../pages/Profile/Profile";
 import { getStorage, ref } from "firebase/storage";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Family", href: "#", current: false },
-  { name: "News", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
+  { name: "register", href: "/", current: true },
+  { name: "about", href: "#", current: false },
+];
+
+const userNavigation = [
+  { name: "home", href: "/", current: true },
+  { name: "calender", href: "#", current: false },
+  { name: "help", href: "#", current: false },
 ];
 
 function classNames(...classes) {
@@ -21,8 +36,11 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
-  const { logout, isLoggedIn, profile, profileUrl } = UserAuth();
+  const { logout, isLoggedIn, profile, profileUrl, signIn } = UserAuth();
   const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState();
+  const [error, setError] = useState('')
 
   const handleLogout = async () => {
     try {
@@ -34,16 +52,20 @@ export default function NavBar() {
     }
   };
 
-  const handleProfile = () => {
-    navigate("/profile/" + profile.displayName);
-  };
-
-  const handleSettings = () => {
-    navigate("/settings/" + profile.displayName);
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signIn(email, password);
+      navigate("/profile" );
+    } catch (e) {
+      setError(e.message);
+      console.log(e.message);
+    }
   };
 
   return (
-    <Disclosure as="nav" className="bg-indigo-600 z-40">
+    <Disclosure as="nav" className="bg-emerald-600 z-40">
       {({ open }) => (
         <>
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,7 +73,7 @@ export default function NavBar() {
               <div className="flex">
                 <div className="-ml-2 mr-2 flex items-center md:hidden">
                   {/* Mobile menu button */}
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-indigo-400 hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-emerald-400 hover:bg-emerald-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -61,57 +83,115 @@ export default function NavBar() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-10 w-auto lg:hidden"
-                    src={Logo}
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-10 w-auto lg:block"
-                    src={Logo}
-                    alt="Your Company"
-                  />
+                  <p className="block text-xl lg:hidden">TEGACHAT</p>
+                  <p className="hidden text-4xl text-emerald-300 font-extrabold lg:block">
+                    <span className="text-emerald-100">TEGA</span>CHAT
+                  </p>
                 </div>
-                <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-white text-indigo-600"
-                          : "text-white hover:bg-indigo-300 hover:text-indigo-600",
-                        "px-3 py-2 rounded-md text-sm font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
+                {isLoggedIn ? (
+                  ""
+                ) : (
+                  <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+                    {navigation.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={classNames(
+                          item.current
+                            ? "bg-white text-emerald-600"
+                            : "text-white hover:bg-emerald-300 hover:text-emerald-600",
+                          "px-3 py-2 rounded-md text-sm font-medium"
+                        )}
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex">
+                {isLoggedIn ? (
+                  <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+                    {userNavigation.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={classNames(
+                          item.current
+                            ? "bg-emerald-200 text-emerald-600"
+                            : "text-white hover:bg-emerald-300 hover:text-emerald-600",
+                          "px-3 py-2 rounded-md text-sm font-medium"
+                        )}
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="flex items-center">
                 {isLoggedIn ? (
                   <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                    <button
-                      type="button"
-                      className="rounded-md bg-indigo-800 p-1 text-indigo-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-800"
-                    >
-                      <span className="relative ">
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-8 w-8" aria-hidden="true" />
-                        <span className="absolute top-0 right-0 block h-3 w-3 -tranindigo-y-1/2 tranindigo-x-1/2 transform rounded-full bg-indigo-400 ring-2 ring-white" />
-                      </span>
-                    </button>
-
-                    {/* Profile dropdown */}
-                    <Menu as="div" className="relative ml-3">
+                    <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="flex rounded-lg bg-indigo-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-800">
+                        <Menu.Button className="flex rounded-lg bg-emerald-800 p-1 text-emerald-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-800">
+                          <BellIcon className="h-8 w-8" aria-hidden="true" />
+                          {profile?.notifications &&
+                          profile?.notifications[0] ? (
+                            <span className="absolute top-0 right-0 block h-3 w-3 -tranemerald-y-1/2 tranemerald-x-1/2 transform rounded-full bg-green-400 ring-2 ring-white" />
+                          ) : (
+                            ""
+                          )}
+                        </Menu.Button>
+                      </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            <Menu.Item as="div">
+                              {profile?.notifications &&
+                              profile?.notifications[0] ? (
+                                profile.notifications?.map((notice, index) => (
+                                  <div key={index}>
+                                    <Link
+                                      to={"/group-add/" + notice.groupID}
+                                      className="text-gray-700 block px-4 py-2 text-sm"
+                                    >
+                                      {notice.firstName} {notice.lastName} would
+                                      like to join {notice.groupID}
+                                    </Link>
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="text-gray-700 block px-4 py-2 text-sm">
+                                  No New Notifications
+                                </div>
+                              )}
+                            </Menu.Item>
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                    {/* Profile dropdown */}
+                    <Menu as="div" className="relative ml-2">
+                      <div>
+                        <Menu.Button className="flex rounded-lg bg-emerald-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-800">
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-10 w-10 rounded-lg bg-white object-fit-cover object-position-center"
-                            src={profileUrl}
+                            src={profileUrl ? profileUrl : photo}
                             alt=""
                           />
                         </Menu.Button>
@@ -128,18 +208,18 @@ export default function NavBar() {
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Link
                             to={`/profile/${profile.displayName}`}
-                            className="block px-4 py-2 text-sm text-indigo-700 hover:bg-indigo-100"
+                            className="block px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-100"
                           >
                             Your Profile
                           </Link>
                           <Link
-                            className="block px-4 py-2 text-sm text-indigo-700 hover:bg-indigo-100"
+                            className="block px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-100"
                             to="/settings"
                           >
                             Settings
                           </Link>
                           <a
-                            className="block px-4 py-2 text-sm text-indigo-700 hover:bg-indigo-100"
+                            className="block px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-100"
                             onClick={handleLogout}
                           >
                             Sign Out
@@ -150,13 +230,40 @@ export default function NavBar() {
                   </div>
                 ) : (
                   <>
-                    <div className="flex-shrink-0">
+                    <form className="relative inline-flex items-center lg:block hidden">
+                      <input
+                        type="text"
+                        className="px-4 py-2 mr-2 rounded-md"
+                        placeholder="Email"
+                        onChange={(e) => {setEmail(e.target.value)}}
+                      />
+                      <input
+                        type="text"
+                        className="px-4 py-2 mr-2 rounded-md"
+                        placeholder="Password"
+                        onChange={(e) => {setPassword(e.target.value)}}
+                      />
+                    </form>
+                    <div className="flex-shrink-0 lg:block hidden">
+                      <button
+                        type="button"
+                        className="relative inline-flex items-center rounded-md border border-transparent bg-emerald-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-emerald-800"
+                        onClick={handleSignIn}
+                      >
+                        <ArrowRightOnRectangleIcon
+                          className="-ml-1 mr-2 h-5 w-5"
+                          aria-hidden="true"
+                        />
+                        <span>Login</span>
+                      </button>
+                    </div>
+                    <div className="flex-shrink-0 lg:hidden">
                       <Link
                         type="button"
                         to="/login"
-                        className="relative inline-flex items-center rounded-md border border-transparent bg-indigo-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-800"
+                        className="relative inline-flex items-center rounded-md border border-transparent bg-emerald-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-emerald-800"
                       >
-                        <PlusIcon
+                        <ArrowRightOnRectangleIcon
                           className="-ml-1 mr-2 h-5 w-5"
                           aria-hidden="true"
                         />
@@ -178,8 +285,8 @@ export default function NavBar() {
                   href={item.href}
                   className={classNames(
                     item.current
-                      ? "bg-indigo-900 text-white"
-                      : "text-indigo-300 hover:bg-indigo-700 hover:text-white",
+                      ? "bg-emerald-900 text-white"
+                      : "text-emerald-300 hover:bg-emerald-700 hover:text-white",
                     "block px-3 py-2 rounded-md text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}
@@ -188,12 +295,12 @@ export default function NavBar() {
                 </Disclosure.Button>
               ))}
             </div>
-            <div className="border-t border-indigo-700 pt-4 pb-3">
+            <div className="border-t border-emerald-700 pt-4 pb-3">
               <div className="flex items-center px-5 sm:px-6">
                 <div className="flex-shrink-0">
                   <img
                     className="h-10 w-10 rounded-lg"
-                    src="https://firebasestorage.googleapis.com/v0/b/fambook-c536f.appspot.com/o/userProfilePics%2FSF5BIlAfJ1cFTPz6s1eHbWG3DM53profilePic?alt=media&token=d9b1c589-d354-4ed4-b849-2e3e1c9888b"
+                    src={profileUrl}
                     alt=""
                   />
                 </div>
@@ -201,26 +308,26 @@ export default function NavBar() {
                   <div className="text-base font-medium text-white">
                     {profile.firstName} {profile.lastName}
                   </div>
-                  <div className="text-sm font-medium text-indigo-400">
+                  <div className="text-sm font-medium text-emerald-400">
                     {profile.email}
                   </div>
                 </div>
                 <button
                   type="button"
-                  className="ml-auto flex-shrink-0 rounded-md bg-indigo-800 p-1 text-indigo-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-800"
+                  className="ml-auto flex-shrink-0 rounded-md bg-emerald-800 p-1 text-emerald-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-800"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
               <div className="mt-3 space-y-1 px-2 sm:px-3">
-                <a className="block rounded-md px-3 py-2 text-base font-medium text-indigo-400 hover:bg-indigo-700 hover:text-white">
+                <a className="block rounded-md px-3 py-2 text-base font-medium text-emerald-400 hover:bg-emerald-700 hover:text-white">
                   Your Profile
                 </a>
-                <a className="block rounded-md px-3 py-2 text-base font-medium text-indigo-400 hover:bg-indigo-700 hover:text-white">
+                <a className="block rounded-md px-3 py-2 text-base font-medium text-emerald-400 hover:bg-emerald-700 hover:text-white">
                   Settings
                 </a>
-                <a className="block rounded-md px-3 py-2 text-base font-medium text-indigo-400 hover:bg-indigo-700 hover:text-white">
+                <a className="block rounded-md px-3 py-2 text-base font-medium text-emerald-400 hover:bg-emerald-700 hover:text-white">
                   Sign Out
                 </a>
               </div>

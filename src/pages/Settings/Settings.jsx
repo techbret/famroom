@@ -231,7 +231,7 @@ export default function Settings() {
                         We value your Privacy and do everything to ensure your data is safe. If you want additional measures select below.
                       </p>
                     </div>
-                    <ul role="list" className="mt-2 divide-y divide-gray-200">
+                    <div role="list" className="mt-2 divide-y divide-gray-200">
                       <Switch.Group as="li" className="flex items-center justify-between py-4">
                         <div className="flex flex-col">
                           <Switch.Label as="p" className="text-sm font-medium text-gray-900" passive>
@@ -336,7 +336,7 @@ export default function Settings() {
                           />
                         </Switch>
                       </Switch.Group>
-                    </ul>
+                    </div>
                   </div>
                   <div className="mt-4 flex justify-end py-4 px-4 sm:px-6">
                     <button
