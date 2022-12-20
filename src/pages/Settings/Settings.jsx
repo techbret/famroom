@@ -1,42 +1,7 @@
-import { Fragment, useState } from 'react'
-import { Disclosure, Menu, Switch, Transition } from '@headlessui/react'
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import {
-  Bars3Icon,
-  BellIcon,
-  CogIcon,
-  CreditCardIcon,
-  KeyIcon,
-  SquaresPlusIcon,
-  UserCircleIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
+import { useState } from 'react'
+import { Switch } from '@headlessui/react'
 import { UserAuth } from '../../context/UseContext/AuthContext'
 
-const user = {
-  name: 'Debbie Lewis',
-  handle: 'deblewis',
-  email: 'debbielewis@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=320&h=320&q=80',
-}
-const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Jobs', href: '#', current: false },
-  { name: 'Applicants', href: '#', current: false },
-  { name: 'Company', href: '#', current: false },
-]
-const subNavigation = [
-  { name: 'Profile', href: '#', icon: UserCircleIcon, current: true },
-  { name: 'Account', href: '#', icon: CogIcon, current: false },
-  { name: 'Password', href: '#', icon: KeyIcon, current: false },
-  { name: 'Notifications', href: '#', icon: BellIcon, current: false }
-]
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')

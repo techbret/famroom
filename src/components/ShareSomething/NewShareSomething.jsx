@@ -51,7 +51,7 @@ export default function NewShareSomething() {
   const handleSubmitPost = (e) => {
     e.preventDefault();
     if (assigned._id === undefined) {
-      console.log(profile.familyCode);
+      console.log(assigned.id)
       profile.familyCode.forEach((code) => {
         createPost({
           firstName: profile.firstName,
@@ -82,7 +82,6 @@ export default function NewShareSomething() {
       setTitle("Title")
     }
   };
-console.log(assigned)
   return (
     <form action="#" className="relative shadow-lg bg-white rounded-lg">
       <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">

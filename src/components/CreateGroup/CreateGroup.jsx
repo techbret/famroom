@@ -22,7 +22,8 @@ export default function CreateGroup() {
     groupName: groupName,
     id: identifier,
     admin: profile._id,
-    members: [profile._id],    
+    members: [profile._id],
+    pendingMembers: []    
   };
 
   const handleCreateGroup = (e) => {
