@@ -7,18 +7,22 @@ import { UserAuth } from '../../context/UseContext/AuthContext';
 
 export default function Modal() {
   const [open, setOpen] = useState(true)  
-  const { user, profile } = UserAuth()
+  const { user, profile, profileUrl, updateStatus } = UserAuth()
   const [status, setStatus] = useState(profile.status)
+
+  const statusData = {
+    id: user.uid,
+    status: status,
+    profilePic: profileUrl,
+    groups: profile.familyCode,
+    firstName: profile.firstName,
+    lastName: profile.lastName
+  }
 
   const handleUpdateStatus = async (e) => {
     e.preventDefault();
-    try {
-      await updateDoc(doc(db, "users", user.uid), {status: status});
-      setOpen(false)
-    } catch (err) {
-      console.log(err)
-    }
-    
+    updateStatus(statusData);
+    setOpen(false)    
   }
 
   

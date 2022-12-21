@@ -82,8 +82,8 @@ export default function NavBar() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-shrink-0 items-center">
-                  <p className="block text-xl lg:hidden">TEGACHAT</p>
+                <div className="flex flex-shrink-0 items-center ">
+                  <p className="block text-4xl text-emerald-300 font-extrabold lg:hidden"><span className="text-emerald-100">TEGA</span>CHAT</p>
                   <p className="hidden text-4xl text-emerald-300 font-extrabold lg:block">
                     <span className="text-emerald-100">TEGA</span>CHAT
                   </p>
@@ -230,7 +230,7 @@ export default function NavBar() {
                   </div>
                 ) : (
                   <>
-                    <form className="relative inline-flex items-center lg:block hidden">
+                    <form className="relative inline-flex items-center lg:block hidden focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-emerald-800">
                       <input
                         type="text"
                         className="px-4 py-2 mr-2 rounded-md"
@@ -238,8 +238,8 @@ export default function NavBar() {
                         onChange={(e) => {setEmail(e.target.value)}}
                       />
                       <input
-                        type="text"
-                        className="px-4 py-2 mr-2 rounded-md"
+                        type="password"
+                        className="px-4 py-2 mr-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-emerald-800"
                         placeholder="Password"
                         onChange={(e) => {setPassword(e.target.value)}}
                       />

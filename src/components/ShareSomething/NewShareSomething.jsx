@@ -48,16 +48,18 @@ export default function NewShareSomething() {
     name: "All Groups"
   }
 
+  const posID = Math.floor(Math.random() * 10000000);
+
   const handleSubmitPost = (e) => {
     e.preventDefault();
     if (assigned._id === undefined) {
       console.log(assigned.id)
-      profile.familyCode.forEach((code) => {
+      profile.familyCode?.forEach((code) => {
         createPost({
           firstName: profile.firstName,
           lastName: profile.lastName,
-          groupID: code._id,
-          id: Math.floor(Math.random() * 10000000),
+          groupID: code,
+          id: posID,
           post: post,
           title: title,
           displayName: profile.displayName,
@@ -71,6 +73,7 @@ export default function NewShareSomething() {
         firstName: profile.firstName,
         lastName: profile.lastName,
         groupID: assigned._id,
+        id: posID,
         post: post,
         title: title,
         displayName: profile.displayName,
@@ -137,11 +140,11 @@ export default function NewShareSomething() {
                 </Listbox.Label>
                 <div className="relative">
                   <Listbox.Button className="relative inline-flex items-center whitespace-nowrap rounded-full bg-gray-50 py-2 px-2 text-sm font-medium text-gray-500 hover:bg-gray-100 sm:px-3">
-                   
-                      <UsersIcon
-                        className="h-5 w-5 flex-shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
+
+                    <UsersIcon
+                      className="h-5 w-5 flex-shrink-0 text-gray-400"
+                      aria-hidden="true"
+                    />
 
                     <span
                       className="hidden truncate sm:ml-2 sm:block"
@@ -164,7 +167,7 @@ export default function NewShareSomething() {
                             active ? "bg-gray-100" : "bg-white",
                             "relative cursor-default select-none py-2 px-3"
                           )
-                          
+
                         }
                         value={allGroups}
                       >
@@ -177,40 +180,46 @@ export default function NewShareSomething() {
                           <span className="ml-3 block truncate font-medium" >
                             All Groups
                           </span>
-                          
+
                         </div>
                       </Listbox.Option>
-                      {profile.groups?.map((assignee) => (
-                        <Listbox.Option
-                          key={assignee._id}
-                          className={({ active }) =>
-                            classNames(
-                              active ? "bg-gray-100" : "bg-white",
-                              "relative cursor-default select-none py-2 px-3"
-                            )
-                          }
-                          value={assignee}
-                        >
-                          <div className="flex items-center">
-                            {assignee.avatar ? (
-                              <img
-                                src={assignee.avatar}
-                                alt=""
-                                className="h-5 w-5 flex-shrink-0 rounded-full"
-                              />
-                            ) : (
-                              <UsersIcon
-                                className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                aria-hidden="true"
-                              />
-                            )}
+                      {profile.groups ? (
+                        <>
+                          {Object.entries(profile.groups)?.map(([key, value]) => (
+                            <Listbox.Option
+                              key={key}
+                              className={({ active }) =>
+                                classNames(
+                                  active ? "bg-gray-100" : "bg-white",
+                                  "relative cursor-default select-none py-2 px-3"
+                                )
+                              }
+                              value={value}
+                            >
+                              <div className="flex items-center">
+                                {value.avatar ? (
+                                  <img
+                                    src={value.avatar}
+                                    alt=""
+                                    className="h-5 w-5 flex-shrink-0 rounded-full"
+                                  />
+                                ) : (
+                                  <UsersIcon
+                                    className="h-5 w-5 flex-shrink-0 text-gray-400"
+                                    aria-hidden="true"
+                                  />
+                                )}
 
-                            <span className="ml-3 block truncate font-medium">
-                              {assignee.name}
-                            </span>
-                          </div>
-                        </Listbox.Option>
-                      ))}
+                                <span className="ml-3 block truncate font-medium">
+                                  {value.name}
+                                </span>
+                              </div>
+                            </Listbox.Option>
+                          ))}
+
+                        </>
+                      ) : ''}
+
                     </Listbox.Options>
                   </Transition>
                 </div>

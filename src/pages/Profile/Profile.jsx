@@ -3,6 +3,7 @@ import ChatBlock from "../../components/ChatBlock/ChatBlock";
 import ChatRoomBlock from "../../components/ChatRoomBlock/ChatRoomBlock";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import NewShareSomething from "../../components/ShareSomething/NewShareSomething";
+import StatusLog from "../../components/StatusLog/StatusLog";
 import ThoughtLog from "../../components/ThoughtLog/ThoughtLog";
 
 export default function Profile() {
@@ -20,7 +21,7 @@ export default function Profile() {
                 <div className="h-full py-6 pl-4 pr-6 sm:pl-6 lg:pl-8 xl:pl-0">
                   <ProfileCard />
                   {/* End left column area */}
-                  <h1>Status Log Goes Here</h1>
+                  <StatusLog />
                 </div>
               </div>
 

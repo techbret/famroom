@@ -23,6 +23,8 @@ import {
   deleteField,
   arrayRemove,
   serverTimestamp,
+  deleteDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -37,6 +39,7 @@ export const AuthContextProvider = ({ children }) => {
   const [profileUrl, setProfileUrl] = useState("");
   const [group, setGroup] = useState("");
   const [messages, setMessages] = useState([]);
+  const [upDates, setUpdates] = useState([]);
   const [chats, setChats] = useState([]);
 
   const uploadProfile = (file) => {
@@ -80,6 +83,28 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const updateStatus = async (statusData) => {
+    try {
+      await updateDoc(doc(db, "users", statusData.id), {status: statusData.status})
+        .then(
+          await statusData.groups?.forEach((group) => {
+            setDoc(doc(db, "updates", statusData.id + group), {
+              profileID: statusData.id,
+              profilePic: statusData.profilePic,
+              timestamp: serverTimestamp(),
+              group: group,
+              status: statusData.status,
+              firstName: statusData.firstName,
+              lastName: statusData.lastName
+            })            
+          })          
+          )
+    } catch (err) {
+      console.log(err)
+    }
+  }   
+
+
   const sendMessage = async (roomID, userData, text) => {
     try {
       await addDoc(collection(db, "chat-rooms", roomID, "messages"), {
@@ -108,6 +133,13 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const joinGroup = async ({ joinData }) => {
+    const map = {
+      _id: joinData.id,
+      link: "/" + joinData.id,
+      name: joinData.id + " (pending)"
+    };
+    
+    const index = joinData.id
     try {
       const imgUrl = await getDownloadURL(ref(storage, joinData.profileURL));
       await addDoc(collection(db, "groups", joinData.id, "pendingMembers"), {
@@ -118,11 +150,9 @@ export const AuthContextProvider = ({ children }) => {
           profilePic: imgUrl
       });
       await updateDoc(doc(db, "users", joinData.profileID), {
-        pendingGroups: arrayUnion({
-          _id: joinData.id,
-          link: "/" + joinData.id,
-          name: joinData.id + " (pending)",
-        }),
+        pendingGroups: {
+          [index]: map
+        },
       });
       const userRef = await getDoc(doc(db, "groups", joinData.id));
       if (userRef.exists()) {
@@ -153,7 +183,32 @@ export const AuthContextProvider = ({ children }) => {
       }));
       callback(subscribers)
     })
+  };
+
+  const approveAdd = async (userData) => {    
+    try {
+      const batch = writeBatch(db)
+      batch.update(doc(db, "groups", userData.groupID), {
+        members: arrayUnion(userData.uid)
+      })
+      batch.delete(doc(db, "groups", userData.groupID, "pendingMembers", userData.docRef))
+      batch.update(doc(db, "users", userData.uid), {
+        groups: arrayUnion({
+          _id: userData.groupID,
+          link: '/' + userData.groupID,
+          name: userData.groupName
+        }),
+        familyCode: arrayUnion(userData.groupID),
+        pendingGroups: arrayRemove(userData.groupID)
+      })
+      await batch.commit()
+    } catch (err) {
+      console.log(err)
+    }
   }
+  
+
+ 
 
   const createPost = async (postData) => {
     try {
@@ -167,18 +222,27 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const createGroup = async ({ groupData }) => {
+
+    const index = groupData.id
+    const q = await getDoc(doc(db, "users", groupData.admin))
+    const existingMapField = q.data().groups
+    const map = {
+      ...existingMapField,
+      [index]: {
+        _id: groupData.id,
+        link: "/" + groupData.id,
+        name: groupData.groupName,
+      }
+    }
+
+
     try {
       await setDoc(doc(db, "groups", groupData.id), groupData)
-        .then(await setDoc(doc(db, "posts", groupData.id), { posts: [] }))
         .then(
           await updateDoc(doc(db, "users", groupData.admin), {
             familyCode: arrayUnion(groupData.id),
-            groups: arrayUnion({
-              _id: groupData.id,
-              link: "/" + groupData.id,
-              name: groupData.groupName,
-            }),
-          })
+            groups: map,
+          }, {merge: true})
         );
     } catch (err) {
       alert(`There was an error ${err}`);
@@ -208,7 +272,7 @@ export const AuthContextProvider = ({ children }) => {
     setIsLoggedIn(false);
     return signOut(auth);
   };
-
+  
   const getPosts = (id) => {
     const q = query(
       collection(db, "posts"),
@@ -225,6 +289,22 @@ export const AuthContextProvider = ({ children }) => {
     });
   };
 
+  const getStatuses = (id) => {
+    const q = query(
+      collection(db, "updates"),
+      where("group", "in", id.familyCode),
+      orderBy("timestamp", "desc")
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const statuses = [];
+      querySnapshot.forEach((doc) => {
+        statuses.push(doc.data());
+      })
+      setUpdates(statuses);
+      return unsubscribe
+    })
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -234,6 +314,7 @@ export const AuthContextProvider = ({ children }) => {
           setProfile(doc.data());
           getImage(doc.data().profilePicUrl);
           getPosts(doc.data());
+          getStatuses(doc.data());
         });
         console.log("It ran again");
       } else {
@@ -267,7 +348,10 @@ export const AuthContextProvider = ({ children }) => {
         getMessages,
         sendMessage,
         chats,
-        getGroupAdds
+        getGroupAdds,
+        updateStatus,
+        upDates,
+        approveAdd
       }}
     >
       {children}

@@ -8,20 +8,16 @@ import {
   FlagIcon,
   StarIcon,
 } from "@heroicons/react/20/solid";
-import {
-  toDate
-} from "firebase/firestore";
-import { db } from "../../config/firebase";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ThoughtLog() {
-  const { posts, profile, messages } = UserAuth();
-  const [postIDs, setPostIDs] = useState([]);
+  const { profile, messages } = UserAuth();
   
-  const [group, setGroup] = useState('lava884');
+  const uniqueMessages = messages.filter((message, index, self) => self.findIndex(m => m.id === message.id) === index);
+  
 
   const convertToString = (date) => {
     const newDate = date.toDate();
@@ -32,10 +28,10 @@ export default function ThoughtLog() {
 
   return (
     <div>
-      {messages.map((post) => (
+      {uniqueMessages.map((post, index) => (
         <div className="bg-white px-4 py-5 sm:px-6 border mt-4 rounded-sm shadow-md">
           <div className="flex space-x-3">
-            <div key={post.id}>
+            <div key={index}>
               <div className="flex">
                 <div className="mr-4 flex-shrink-0 self-center">
                   <img
