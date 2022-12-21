@@ -15,6 +15,7 @@ import CreateGroup from "./components/CreateGroup/CreateGroup";
 import Settings from "./pages/Settings/Settings";
 import Chat from "./components/Chat/Chat";
 import JoinGroup from "./components/JoinGroup/JoinGroup";
+import GroupAddNotification from "./components/GroupAddNotification/GroupAddNotification";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/create-group" element={<CreateGroup />} />
           <Route path="/chat/:chatID" element={<Chat />} />
           <Route path="/join" element={<JoinGroup />} />
+          <Route path="/group-add/:groupID" element={<GroupAddNotification />} />
         </Routes>
       </AuthContextProvider>
     </div>

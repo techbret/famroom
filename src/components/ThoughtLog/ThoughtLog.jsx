@@ -64,7 +64,7 @@ export default function ThoughtLog() {
                   <span className="sr-only">Open options</span>
                   
                   <EllipsisHorizontalIcon
-                    className="h-5 w-5 text-indigo-500"
+                    className="h-5 w-5 text-emerald-500"
                     aria-hidden="true"
                   />
                 </Menu.Button>

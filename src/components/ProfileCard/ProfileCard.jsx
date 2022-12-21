@@ -12,7 +12,7 @@ export default function ProfileCard() {
   }
 
   return (
-    <div>
+    <div className="lg:block hidden">
         
       <div className="mx-auto text-center shadow-lg bg-white p-5 rounded-md">
         <div className="flex flex-wrap justify-center ">

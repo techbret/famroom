@@ -36,13 +36,13 @@ export default function CreateGroup() {
     <div>
       <div className="mx-auto sm:max-w-2xl max-w-xl p-12 mt-20">
         <h1 className="font-bold text-4xl text-center">Create a Group</h1>
-        <p className="text-indigo-800 text-center text-lg font- max-w-2xl mx-auto">
+        <p className="text-emerald-800 text-center text-lg font- max-w-2xl mx-auto">
           Groups are how we share information. By creating a group you can then
           invite others to join, and keep your conversations private and
           meaningful
         </p>
         <form className="mt-4">
-          <div className="relative rounded-md border border-gray-300 px-6 py-4 shadow-sm focus-within:border-indigo-600 focus-within:ring-1 focus-within:ring-indigo-600">
+          <div className="relative rounded-md border border-gray-300 px-6 py-4 shadow-sm focus-within:border-emerald-600 focus-within:ring-1 focus-within:ring-emerald-600">
             <label
               htmlFor="name"
               className="absolute -top-2 left-2 -mt-px inline-block bg-white px-1 text-xs font-medium text-gray-900"
@@ -70,12 +70,12 @@ export default function CreateGroup() {
                 type="text"
                 name="company-website"
                 id="company-website"
-                className="block w-full min-w-0 flex-1 rounded-none border-gray-300 px-3 py-4 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="block w-full min-w-0 flex-1 rounded-none border-gray-300 px-3 py-4 focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm"
                 placeholder={identifier}
               />
               <button
                 type="button"
-                className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 onClick={handleGenerate}
               >
                 <ArrowPathRoundedSquareIcon
@@ -92,7 +92,7 @@ export default function CreateGroup() {
           </div>
           <button
             type="button"
-            className="w-full mx-auto rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-12"
+            className="w-full mx-auto rounded-md border border-transparent bg-emerald-600 px-6 py-3 font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 mt-12"
             onClick={handleCreateGroup}
           >
             Create Group

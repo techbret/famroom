@@ -29,7 +29,7 @@ export default function LeftNav() {
       <div className="fixed top-0 right-0 h-full w-1/2 bg-gray-50" aria-hidden="true" />
       <div className="relative flex min-h-screen flex-col">
         {/* Navbar */}
-        <Disclosure as="nav" className="flex-shrink-0 bg-indigo-600">
+        <Disclosure as="nav" className="flex-shrink-0 bg-emerald-600">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
@@ -39,7 +39,7 @@ export default function LeftNav() {
                     <div className="flex-shrink-0">
                       <img
                         className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=300"
+                        src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=300"
                         alt="Your Company"
                       />
                     </div>
@@ -51,14 +51,14 @@ export default function LeftNav() {
                       <label htmlFor="search" className="sr-only">
                         Search projects
                       </label>
-                      <div className="relative text-indigo-200 focus-within:text-gray-400">
+                      <div className="relative text-emerald-200 focus-within:text-gray-400">
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                           <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
                         </div>
                         <input
                           id="search"
                           name="search"
-                          className="block w-full rounded-md border border-transparent bg-indigo-400 bg-opacity-25 py-2 pl-10 pr-3 leading-5 text-indigo-100 placeholder-indigo-200 focus:bg-white focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
+                          className="block w-full rounded-md border border-transparent bg-emerald-400 bg-opacity-25 py-2 pl-10 pr-3 leading-5 text-emerald-100 placeholder-emerald-200 focus:bg-white focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
                           placeholder="Search projects"
                           type="search"
                         />
@@ -67,7 +67,7 @@ export default function LeftNav() {
                   </div>
                   <div className="flex lg:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-indigo-600 p-2 text-indigo-400 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-emerald-600 p-2 text-emerald-400 hover:bg-emerald-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-600">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
                         <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -82,13 +82,13 @@ export default function LeftNav() {
                       <div className="flex">
                         <a
                           href="#"
-                          className="rounded-md px-3 py-2 text-sm font-medium text-indigo-200 hover:text-white"
+                          className="rounded-md px-3 py-2 text-sm font-medium text-emerald-200 hover:text-white"
                         >
                           Documentation
                         </a>
                         <a
                           href="#"
-                          className="rounded-md px-3 py-2 text-sm font-medium text-indigo-200 hover:text-white"
+                          className="rounded-md px-3 py-2 text-sm font-medium text-emerald-200 hover:text-white"
                         >
                           Support
                         </a>
@@ -96,7 +96,7 @@ export default function LeftNav() {
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-4 flex-shrink-0">
                         <div>
-                          <Menu.Button className="flex rounded-full bg-indigo-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-700">
+                          <Menu.Button className="flex rounded-full bg-emerald-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-700">
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
@@ -167,38 +167,38 @@ export default function LeftNav() {
                   <Disclosure.Button
                     as="a"
                     href="#"
-                    className="block rounded-md bg-indigo-800 px-3 py-2 text-base font-medium text-white"
+                    className="block rounded-md bg-emerald-800 px-3 py-2 text-base font-medium text-white"
                   >
                     Dashboard
                   </Disclosure.Button>
                   <Disclosure.Button
                     as="a"
                     href="#"
-                    className="mt-1 block rounded-md px-3 py-2 text-base font-medium text-indigo-200 hover:bg-indigo-600 hover:text-indigo-100"
+                    className="mt-1 block rounded-md px-3 py-2 text-base font-medium text-emerald-200 hover:bg-emerald-600 hover:text-emerald-100"
                   >
                     Support
                   </Disclosure.Button>
                 </div>
-                <div className="border-t border-indigo-800 pt-4 pb-3">
+                <div className="border-t border-emerald-800 pt-4 pb-3">
                   <div className="px-2">
                     <Disclosure.Button
                       as="a"
                       href="#"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-indigo-200 hover:bg-indigo-600 hover:text-indigo-100"
+                      className="block rounded-md px-3 py-2 text-base font-medium text-emerald-200 hover:bg-emerald-600 hover:text-emerald-100"
                     >
                       Your Profile
                     </Disclosure.Button>
                     <Disclosure.Button
                       as="a"
                       href="#"
-                      className="mt-1 block rounded-md px-3 py-2 text-base font-medium text-indigo-200 hover:bg-indigo-600 hover:text-indigo-100"
+                      className="mt-1 block rounded-md px-3 py-2 text-base font-medium text-emerald-200 hover:bg-emerald-600 hover:text-emerald-100"
                     >
                       Settings
                     </Disclosure.Button>
                     <Disclosure.Button
                       as="a"
                       href="#"
-                      className="mt-1 block rounded-md px-3 py-2 text-base font-medium text-indigo-200 hover:bg-indigo-600 hover:text-indigo-100"
+                      className="mt-1 block rounded-md px-3 py-2 text-base font-medium text-emerald-200 hover:bg-emerald-600 hover:text-emerald-100"
                     >
                       Sign out
                     </Disclosure.Button>

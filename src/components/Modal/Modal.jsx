@@ -43,16 +43,16 @@ export default function Modal() {
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
-              enterFrom="opacity-0 tranindigo-y-4 sm:tranindigo-y-0 sm:scale-95"
-              enterTo="opacity-100 tranindigo-y-0 sm:scale-100"
+              enterFrom="opacity-0 tranemerald-y-4 sm:tranemerald-y-0 sm:scale-95"
+              enterTo="opacity-100 tranemerald-y-0 sm:scale-100"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100 tranindigo-y-0 sm:scale-100"
-              leaveTo="opacity-0 tranindigo-y-4 sm:tranindigo-y-0 sm:scale-95"
+              leaveFrom="opacity-100 tranemerald-y-0 sm:scale-100"
+              leaveTo="opacity-0 tranemerald-y-4 sm:tranemerald-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div>
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
-                    <PencilSquareIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
+                    <PencilSquareIcon className="h-6 w-6 text-emerald-600" aria-hidden="true" />
                   </div>
                   <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
@@ -60,7 +60,7 @@ export default function Modal() {
                     </Dialog.Title>
                     <div className="mt-2">
                       
-                        <input className='rounded-md w-full focus:border-indigo-500 border-indigo-900' type="text" placeholder='Update Status' onChange={(e) => { setStatus(e.target.value)} }/>
+                        <input className='rounded-md w-full focus:border-emerald-500 border-emerald-900' type="text" placeholder='Update Status' onChange={(e) => { setStatus(e.target.value)} }/>
                       
                       <p className="text-xs text-gray-500">
                         Your status is persistant. People will see it when they visit your profile
@@ -71,7 +71,7 @@ export default function Modal() {
                 <div className="mt-5 sm:mt-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:text-sm"
                     onClick={handleUpdateStatus}
                   >
                     Update Status

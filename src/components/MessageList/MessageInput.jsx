@@ -114,7 +114,7 @@ export default function MessageInput({ roomID }) {
               </button>
               <button
                 type="button"
-                className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-indigo-500 hover:bg-indigo-400 focus:outline-none"
+                className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-emerald-500 hover:bg-emerald-400 focus:outline-none"
                 onClick={handleSubmit}
               >
                 <span className="font-bold">Send</span>
